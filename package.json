@@ -4,15 +4,13 @@
   "description": "",
   "main": "",
   "scripts": {
+    "build": "http-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "megafatsquirrel",
   "license": "MIT",
   "dependencies": {
     "http-server": "^0.10.0",
     "phaser-ce": "^2.9.1"
-  },
-  "devDependencies": {
-    "typescript": "^2.6.1"
   }
 }
