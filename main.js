@@ -2,8 +2,12 @@ var game = new Phaser.Game(800, 800, Phaser.AUTO, '', { preload: preload, create
 
 var player;
 var speed = 4;
+var worldBounds;
 
 function preload() {
+    // Set to current bg of 1000x1000
+    game.world.setBounds(0, 0, 1000, 1000);
+
     game.load.image('grassField', 'assets/sprites/grassField.png');
     game.load.image('imp', 'assets/sprites/imp.png');
     game.load.image('player', 'assets/sprites/player.png');
@@ -11,12 +15,16 @@ function preload() {
 }
 
 function create() {
-    game.add.sprite(0, 0, 'grassField');
-    player = game.add.sprite(100, 0, 'player');
+    worldBounds = game.add.sprite(game.world.centerX, game.world.centerY, 'grassField');
+    worldBounds.anchor.set(0.5);
+
+    player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
     player.anchor.setTo(0.5, 0.5);
+    player.inputEnabled = true;
+    player.input.boundsSprite = worldBounds;
     game.camera.follow(player);
 
-    game.add.sprite(0, 0, 'imp');
+    game.add.sprite(game.world.centerX - 100, game.world.centerY, 'imp');
 }
 
 function update() {
