@@ -1,6 +1,7 @@
 var game = new Phaser.Game(800, 800, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 var player;
+var playerText;
 var sword;
 var imp;
 var speed = 100;
@@ -29,8 +30,15 @@ function create() {
         right: false,
         down: true // default to this?
     };
+    player.exp = 0;
     player.anchor.setTo(0.5, 0.5);
     game.camera.follow(player);
+    
+    playerText = game.add.text(0, 0, "Player Exp: 0", {
+        font: "24px Arial",
+        fill: "#ff0044"
+    });
+    playerText.alignTo(player, Phaser.LEFT_BOTTOM, 16);
 
     sword = game.add.sprite(player.position.x, player.position.y, 'sword');
     sword.visible = false;
@@ -91,6 +99,8 @@ function update() {
     if (sword.visible){
         if (checkOverlap(sword, imp)){
             imp.kill(); // handle death
+            player.exp += 10;
+            playerText.setText("Player Exp: " + player.exp);
         }
         sword.position.x = player.position.x;
         sword.position.y = player.position.y;
@@ -99,10 +109,10 @@ function update() {
 }
 
 function render() {
-    game.debug.bodyInfo(player, 40, 40);
-    game.debug.body(player);
-    game.debug.body(imp);
-    game.debug.body(sword);
+    // game.debug.bodyInfo(player, 40, 40);
+    // game.debug.body(player);
+    // game.debug.body(imp);
+    // game.debug.body(sword);
 }
 
 function setPlayerFacing(face){
