@@ -2,6 +2,7 @@ var game = new Phaser.Game(800, 800, Phaser.AUTO, '', { preload: preload, create
 
 var player;
 var sword;
+var imp;
 var speed = 4;
 var worldBounds;
 
@@ -34,7 +35,7 @@ function create() {
     sword = game.add.sprite(player.position.x, player.position.y, 'sword');
     sword.visible = false;
 
-    game.add.sprite(game.world.centerX - 100, game.world.centerY, 'imp');
+    imp = game.add.sprite(game.world.centerX - 100, game.world.centerY, 'imp');
 }
 
 function update() {
@@ -73,6 +74,9 @@ function update() {
     }
 
     if (sword.visible){
+        if (Phaser.Rectangle.intersects(sword.getBounds(), imp.getBounds())){
+            imp.visible = false; // handle death
+        }
         sword.position.x = player.position.x;
         sword.position.y = player.position.y;
         adjustSwordPosition();
