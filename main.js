@@ -1,9 +1,9 @@
-var game = new Phaser.Game(800, 800, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 800, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 var player;
 var sword;
 var imp;
-var speed = 4;
+var speed = 100;
 var worldBounds;
 
 function preload() {
@@ -17,6 +17,8 @@ function preload() {
 }
 
 function create() {
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+
     worldBounds = game.add.sprite(game.world.centerX, game.world.centerY, 'grassField');
     worldBounds.anchor.set(0.5);
 
@@ -28,14 +30,18 @@ function create() {
         down: true // default to this?
     };
     player.anchor.setTo(0.5, 0.5);
-    player.inputEnabled = true;
-    player.input.boundsSprite = worldBounds;
     game.camera.follow(player);
 
     sword = game.add.sprite(player.position.x, player.position.y, 'sword');
     sword.visible = false;
 
     imp = game.add.sprite(game.world.centerX - 100, game.world.centerY, 'imp');
+
+    game.physics.arcade.enable([player, sword, imp]);
+    player.body.collideWorldBounds = true;
+    
+    imp.body.immovable = true;
+    sword.enableBody = false;
 }
 
 function update() {
@@ -43,26 +49,34 @@ function update() {
     {
         setPlayerFacing('left');
         sword.currentFacing = 'left';
-        player.x -= speed;        
+        player.body.velocity.x = -speed;
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
     {
         setPlayerFacing('right');
         sword.currentFacing = 'right';
-        player.x += speed;
+        player.body.velocity.x = speed;
+    }else{
+        player.body.velocity.x = 0;
     }
 
     if (game.input.keyboard.isDown(Phaser.Keyboard.W))
     {
         setPlayerFacing('top');
         sword.currentFacing = 'top';
-        player.y -= speed;        
+        player.body.velocity.y = -speed;
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.S))
     {
         setPlayerFacing('down');
         sword.currentFacing = 'down';
-        player.y += speed;
+        player.body.velocity.y = speed;
+    }else{
+        player.body.velocity.y = 0;
+    }
+
+    if (imp.alive) {
+        game.physics.arcade.collide(player, imp);
     }
 
     // Attack
@@ -70,17 +84,25 @@ function update() {
         sword.position.x = player.position.x;
         sword.position.y = player.position.y;
         sword.visible = true;
+        sword.body.enable = true;
         game.time.events.add(250, removeSword, this, true);
     }
 
     if (sword.visible){
-        if (Phaser.Rectangle.intersects(sword.getBounds(), imp.getBounds())){
-            imp.visible = false; // handle death
+        if (checkOverlap(sword, imp)){
+            imp.kill(); // handle death
         }
         sword.position.x = player.position.x;
         sword.position.y = player.position.y;
         adjustSwordPosition();
     }
+}
+
+function render() {
+    game.debug.bodyInfo(player, 40, 40);
+    game.debug.body(player);
+    game.debug.body(imp);
+    game.debug.body(sword);
 }
 
 function setPlayerFacing(face){
@@ -92,7 +114,12 @@ function setPlayerFacing(face){
     }else{
         console.warn('Please use a string, "top", "left", "right", or "down"');
     }
+}
 
+function checkOverlap(spriteA, spriteB) {    
+    var boundsA = spriteA.getBounds();
+    var boundsB = spriteB.getBounds();
+    return Phaser.Rectangle.intersects(boundsA, boundsB);
 }
 
 function adjustSwordPosition(){
@@ -118,4 +145,5 @@ function adjustSwordPosition(){
 
 function removeSword(){
     sword.visible = false;
+    sword.body.enable = false;
 }
