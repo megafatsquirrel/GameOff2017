@@ -4,6 +4,7 @@ var player;
 var playerText;
 var sword;
 var swordSide;
+var shield;
 var imp;
 var speed = 100;
 var worldBounds;
@@ -18,6 +19,8 @@ function preload() {
     game.load.image('player', 'assets/sprites/player.png');
     game.load.spritesheet('sword', 'assets/sprites/sword.png', 20, 40, 1);
     game.load.spritesheet('swordSide', 'assets/sprites/swordSide.png');
+    game.load.spritesheet('shield', 'assets/sprites/shield.png');
+    game.load.spritesheet('shieldSide', 'assets/sprites/shieldSide.png');
 }
 
 function create() {
@@ -47,15 +50,22 @@ function create() {
     swordSide = game.add.sprite(player.position.x, player.position.y, 'swordSide');
     sword.visible = false;
     swordSide.visible = false;
+
+    shield = game.add.sprite(player.position.x, player.position.y, 'shield');
+    shieldSide = game.add.sprite(player.position.x, player.position.y, 'shieldSide');
+    shield.visible = false;
+    shieldSide.visible = false;
         
     imp = game.add.sprite(game.world.centerX - 100, game.world.centerY, 'imp');
 
-    game.physics.arcade.enable([player, sword, swordSide, imp]);
+    game.physics.arcade.enable([player, sword, swordSide, shield, shieldSide, imp]);
     player.body.collideWorldBounds = true;
     
     imp.body.immovable = true;
     swordSide.enableBody = false;
-    sword.enableBody = false;
+    sword.enableBody = false;    
+    shield.enableBody = false;
+    shieldSide.enableBody = false;
 }
 
 function update() {
@@ -108,9 +118,11 @@ function update() {
     }
 
     // Attack
-    if (game.input.keyboard.isDown(Phaser.Keyboard.E)) {
+    if (game.input.keyboard.isDown(Phaser.Keyboard.E)){
         sword.position.x = player.position.x;
         sword.position.y = player.position.y;
+        shieldSide.position.x = player.position.x;
+        shieldSide.position.y = player.position.y;
         if (player.facing.left || player.facing.right){
             swordSide.visible = true;
             swordSide.enableBody = true;
@@ -120,6 +132,24 @@ function update() {
             sword.enableBody = true;
             game.time.events.add(250, removeSword, this, true);
         }
+    }
+
+    // Block
+    if (game.input.keyboard.isDown(Phaser.Keyboard.Q)){
+        shield.position.x = player.position.x;
+        shield.position.y = player.position.y;
+        shieldSide.position.x = player.position.x;
+        shieldSide.position.y = player.position.y;
+        
+        if (player.facing.left || player.facing.right){
+            shieldSide.visible = true;
+            shieldSide.enableBody = true;
+            game.time.events.add(250, removeShieldSide, this, this);
+        }else{
+            shield.visible = true;
+            shield.enableBody = true;
+            game.time.events.add(250, removeShield, this, this);
+        }        
     }
 
     if (sword.enableBody || swordSide.enableBody){
@@ -134,6 +164,14 @@ function update() {
         swordSide.position.y = player.position.y;
         adjustSwordPosition();
     }
+
+    if (shield.enableBody || shieldSide.enableBody) {
+        shield.position.x = player.position.x;
+        shield.position.y = player.position.y;
+        shieldSide.position.x = player.position.x;
+        shieldSide.position.y = player.position.y;
+        adjustShieldPosition();
+    }
 }
 
 function render() {
@@ -143,6 +181,8 @@ function render() {
         game.debug.body(imp);
         game.debug.body(sword);
         game.debug.body(swordSide);
+        game.debug.body(shield);
+        game.debug.body(shieldSide);
     }
 }
 
@@ -174,6 +214,25 @@ function adjustSwordPosition(){
     }
 }
 
+function adjustShieldPosition(){
+    if(player.facing.top){
+        shield.position.y -= 40;
+        shield.position.x -= 10; // Add the height of the player
+    }
+    if(player.facing.left){
+        shieldSide.position.y -= 10;
+        shieldSide.position.x -= 40; // Remove the width of the player
+    }
+    if(player.facing.right){
+        shieldSide.position.y -= 10;
+        shieldSide.position.x += 30; // Remove the width of the player
+    }
+    if(player.facing.down){
+        shield.position.y += 30;
+        shield.position.x -= 10;
+    }
+}
+
 function removeSword(){
     sword.visible = false;
     sword.enableBody = false;
@@ -182,4 +241,14 @@ function removeSword(){
 function removeSwordSide(){
     swordSide.visible = false;
     swordSide.enableBody = false;
+}
+
+function removeShield(){
+    shield.visible = false;
+    shield.enableBody = false;
+}
+
+function removeShieldSide(){
+    shieldSide.visible = false;
+    shieldSide.enableBody = false;
 }
