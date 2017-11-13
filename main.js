@@ -8,7 +8,7 @@ var shield;
 var imp;
 var speed = 100;
 var worldBounds;
-var debugActive = true;
+var debugActive = false;
 
 function preload() {
     // Set to current bg of 1000x1000
@@ -29,14 +29,8 @@ function create() {
     worldBounds = game.add.sprite(game.world.centerX, game.world.centerY, 'grassField');
     worldBounds.anchor.set(0.5);
 
-    player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
-    player.facing = {
-        top: false,
-        left: false,
-        right: false,
-        down: true // default to this?
-    };
-    player.exp = 0;
+    player = game.world.add(new Player(40, 40, 'player', 'warrior', 5, 3, 2, 5));
+    
     player.anchor.setTo(0.5, 0.5);
     game.camera.follow(player);
     
@@ -71,13 +65,13 @@ function create() {
 function update() {
     if (game.input.keyboard.isDown(Phaser.Keyboard.A))
     {
-        setPlayerFacing('left');
+        player.setEntityFacing('left');
         sword.currentFacing = 'left';
         player.body.velocity.x = -speed;
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.D))
     {
-        setPlayerFacing('right');
+        player.setEntityFacing('right');
         sword.currentFacing = 'right';
         player.body.velocity.x = speed;
     }else{
@@ -86,13 +80,13 @@ function update() {
 
     if (game.input.keyboard.isDown(Phaser.Keyboard.W))
     {
-        setPlayerFacing('top');
+        player.setEntityFacing('top');
         sword.currentFacing = 'top';
         player.body.velocity.y = -speed;
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.S))
     {
-        setPlayerFacing('down');
+        player.setEntityFacing('down');
         sword.currentFacing = 'down';
         player.body.velocity.y = speed;
     }else{
@@ -183,17 +177,6 @@ function render() {
         game.debug.body(swordSide);
         game.debug.body(shield);
         game.debug.body(shieldSide);
-    }
-}
-
-function setPlayerFacing(face){
-    if (face && typeof String){
-        player.facing.top = face === 'top' ? true : false;
-        player.facing.left = face === 'left' ? true : false;
-        player.facing.right = face === 'right' ? true : false;
-        player.facing.down = face === 'down' ? true : false;
-    }else{
-        console.warn('Please use a string, "top", "left", "right", or "down"');
     }
 }
 
