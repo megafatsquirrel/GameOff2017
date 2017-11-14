@@ -7,6 +7,7 @@ class GameEntity extends Phaser.Sprite {
         this.dex = dex || 1;
         this.int = int || 1;
         this.vit = vit || 1;
+        this.speed = 100;
 
         this.facing = {
             top: false,
