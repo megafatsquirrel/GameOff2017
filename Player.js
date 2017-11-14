@@ -64,4 +64,48 @@ class Player extends GameEntity {
         player.shieldSide.visible = false;
         player.shieldSide.enableBody = false;
     }
+
+    attack() {
+        if (!player.isAttacking) {
+            player.isAttacking = true;
+            player.sword.position.x = player.position.x;
+            player.sword.position.y = player.position.y;
+            player.shieldSide.position.x = player.position.x;
+            player.shieldSide.position.y = player.position.y;
+            if (player.facing.left || player.facing.right) {
+                player.swordSide.visible = true;
+                player.swordSide.enableBody = true;
+                game.time.events.add(250, player.removeSwordSide, this, true);
+            } else {
+                player.sword.visible = true;
+                player.sword.enableBody = true;
+                game.time.events.add(250, player.removeSword, this, true);
+            }
+        }
+    }
+
+    clearAttack() {
+        player.isAttacking = false;
+    }
+
+    block() {
+        if (!player.isAttacking) {
+            player.isAttacking = true;
+            player.shield.position.x = player.position.x;
+            player.shield.position.y = player.position.y;
+            player.shieldSide.position.x = player.position.x;
+            player.shieldSide.position.y = player.position.y;
+            
+            if (player.facing.left || player.facing.right) {
+                player.shieldSide.visible = true;
+                player.shieldSide.enableBody = true;
+                game.time.events.add(250, player.removeShieldSide, this, this);
+            } else {
+                player.shield.visible = true;
+                player.shield.enableBody = true;
+                game.time.events.add(250, player.removeShield, this, this);
+            }        
+        }
+    }
+    
 }
