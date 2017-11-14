@@ -60,12 +60,10 @@ function create() {
 function update() {
     if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
         player.setEntityFacing('left');
-        player.sword.currentFacing = 'left';
         player.body.velocity.x = -player.speed;
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
         player.setEntityFacing('right');
-        player.sword.currentFacing = 'right';
         player.body.velocity.x = player.speed;
     } else {
         player.body.velocity.x = 0;
@@ -73,12 +71,10 @@ function update() {
 
     if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
         player.setEntityFacing('top');
-        player.sword.currentFacing = 'top';
         player.body.velocity.y = -player.speed;
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
         player.setEntityFacing('down');
-        player.sword.currentFacing = 'down';
         player.body.velocity.y = player.speed;
     } else {
         player.body.velocity.y = 0;
