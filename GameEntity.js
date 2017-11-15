@@ -1,5 +1,4 @@
 class GameEntity extends Phaser.Sprite {
-    
     constructor(x, y, key, type, str, dex, int, vit) {
         super(game, x, y, key);
         this.type = type || 'fighter';

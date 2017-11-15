@@ -1,7 +1,7 @@
 var game = new Phaser.Game(1000, 700, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 var player;
-var imp;
+var wolf;
 var worldBounds;
 var debugActive = false;
 var attackInput;
@@ -11,7 +11,7 @@ function preload() {
     game.world.setBounds(0, 0, 1000, 1000);
 
     game.load.image('grassField', 'assets/sprites/grassField.png');
-    game.load.image('imp', 'assets/sprites/imp.png');
+    game.load.image('wolf', 'assets/sprites/imp.png');
     game.load.image('player', 'assets/sprites/player.png');
     game.load.spritesheet('sword', 'assets/sprites/sword.png', 20, 40, 1);
     game.load.spritesheet('swordSide', 'assets/sprites/swordSide.png');
@@ -46,12 +46,12 @@ function create() {
     player.shield.visible = false;
     player.shieldSide.visible = false;
         
-    imp = game.add.sprite(game.world.centerX - 100, game.world.centerY, 'imp');
+    wolf = game.world.add(new Wolf(game.world.centerX - 100, game.world.centerY, 'wolf', 'Animal', 5, 6, 2, 4));
 
-    game.physics.arcade.enable([player, player.sword, player.swordSide, player.shield, player.shieldSide, imp]);
+    game.physics.arcade.enable([player, player.sword, player.swordSide, player.shield, player.shieldSide, wolf]);
     player.body.collideWorldBounds = true;
     
-    imp.body.immovable = true;
+    wolf.body.immovable = true;
     player.swordSide.enableBody = false;
     player.sword.enableBody = false;    
     player.shield.enableBody = false;
@@ -104,13 +104,13 @@ function update() {
         debugActive = debugActive ? false : true;
     }
 
-    if (imp.alive) {
-        game.physics.arcade.collide(player, imp);
+    if (wolf.alive) {
+        game.physics.arcade.collide(player, wolf);
     }
 
     if (player.sword.enableBody || player.swordSide.enableBody) {
-        if (game.physics.arcade.collide(player.sword, imp) || game.physics.arcade.collide(player.swordSide, imp)) {
-            imp.kill(); // handle death
+        if (game.physics.arcade.collide(player.sword, wolf) || game.physics.arcade.collide(player.swordSide, wolf)) {
+            wolf.kill(); // handle death
             player.exp += 10;
             player.playerText.setText("Player Exp: " + player.exp);
         }
@@ -134,7 +134,7 @@ function render() {
     if (debugActive) {
         game.debug.bodyInfo(player, 40, 40);
         game.debug.body(player);
-        game.debug.body(imp);
+        game.debug.body(wolf);
         game.debug.body(sword);
         game.debug.body(swordSide);
         game.debug.body(shield);
