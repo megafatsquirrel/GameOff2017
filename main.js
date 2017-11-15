@@ -66,7 +66,19 @@ function create() {
     blockInput.onUp.add(player.clearAttack);
 }
 
+function follow() {
+    var distance = this.game.math.distance(wolf.x, wolf.y, player.x, player.y);
+    if (distance > 40) {
+        var rotation = this.game.math.angleBetween(wolf.x, wolf.y, player.x, player.y);
+        wolf.body.velocity.x = Math.cos(rotation) * 100;
+        wolf.body.velocity.y = Math.sin(rotation) * 100;
+    } else {
+        wolf.body.velocity.setTo(0, 0);
+    }
+}
+
 function update() {
+    follow();
     // MOVEMENT
     if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
         player.setEntityFacing('left');
