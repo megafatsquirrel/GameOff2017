@@ -7,6 +7,8 @@ class Player extends GameEntity {
         this.swordSide;
         this.shield;
         this.shieldSide;
+        this.health = 100;
+        this.swordDamage = 10;
     }
 
     adjustSwordPosition() {

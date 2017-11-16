@@ -29,12 +29,6 @@ function create() {
     
     player.anchor.setTo(0.5, 0.5);
     game.camera.follow(player);
-    
-    player.playerText = game.add.text(0, 0, "Player Exp: 0", {
-        font: "24px Arial",
-        fill: "#ff0044"
-    });
-    player.playerText.alignTo(player, Phaser.LEFT_BOTTOM, 16);
 
     player.sword = game.add.sprite(player.position.x, player.position.y, 'sword');
     player.swordSide = game.add.sprite(player.position.x, player.position.y, 'swordSide');
@@ -122,9 +116,7 @@ function update() {
 
     if (player.sword.enableBody || player.swordSide.enableBody) {
         if (game.physics.arcade.collide(player.sword, wolf) || game.physics.arcade.collide(player.swordSide, wolf)) {
-            wolf.kill(); // handle death
-            player.exp += 10;
-            player.playerText.setText("Player Exp: " + player.exp);
+            wolf.handleDamage(player.swordDamage);
         }
         player.sword.position.x = player.position.x;
         player.sword.position.y = player.position.y;
@@ -143,6 +135,9 @@ function update() {
 }
 
 function render() {
+    game.debug.text('Player\'s health: ' + player.health, 32, 32);
+    game.debug.text('Wolf\'s health: ' + wolf.health, 770, 32);
+
     if (debugActive) {
         game.debug.bodyInfo(player, 40, 40);
         game.debug.body(player);
