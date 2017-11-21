@@ -1,7 +1,6 @@
 class Player extends GameEntity {
-    constructor(x, y, key, type, str, dex, int, vit) {
-        super(x, y, key, type, str, dex, int, vit);
-        this.exp = 0;
+    constructor(x, y, key) {
+        super(x, y, key);
         this.playerText = '';
         this.sword;
         this.swordSide;
@@ -9,6 +8,8 @@ class Player extends GameEntity {
         this.shieldSide;
         this.health = 100;
         this.swordDamage = 10;
+        this.hasSwordHit = false;
+        this.stamina = 100;
     }
 
     adjustSwordPosition() {

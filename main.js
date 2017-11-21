@@ -25,7 +25,7 @@ function create() {
     worldBounds = game.add.sprite(game.world.centerX, game.world.centerY, 'grassField');
     worldBounds.anchor.set(0.5);
 
-    player = game.world.add(new Player(40, 40, 'player', 'warrior', 5, 3, 2, 5));
+    player = game.world.add(new Player(40, 40, 'player'));
     
     player.anchor.setTo(0.5, 0.5);
     game.camera.follow(player);
@@ -40,7 +40,7 @@ function create() {
     player.shield.visible = false;
     player.shieldSide.visible = false;
         
-    wolf = game.world.add(new Wolf(game.world.centerX - 100, game.world.centerY, 'wolf', 'Animal', 5, 6, 2, 4));
+    wolf = game.world.add(new Wolf(game.world.centerX - 100, game.world.centerY, 'wolf'));
 
     game.physics.arcade.enable([player, player.sword, player.swordSide, player.shield, player.shieldSide, wolf]);
     player.body.collideWorldBounds = true;
@@ -58,6 +58,19 @@ function create() {
     blockInput = game.input.keyboard.addKey(Phaser.Keyboard.Q);
     blockInput.onDown.add(player.block);
     blockInput.onUp.add(player.clearAttack);
+
+    graphics = game.add.graphics(100, 100);
+    graphics.beginFill(0xFF3300);
+    graphics.lineStyle(10, 0xffd900, 1);
+    graphics.lineTo(250, 50);
+    graphics.lineTo(100, 100);
+    graphics.lineTo(250, 220);
+    graphics.lineTo(50, 220);
+    graphics.lineTo(50, 50);
+
+    //var test = game.world.add(0, 0, graphics.drawRect(10, 10, 100, 100));
+    //test.fixedToCamera = true;
+
 }
 
 function follow() {
@@ -73,6 +86,7 @@ function follow() {
 
 function update() {
     follow();
+
     // MOVEMENT
     if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
         player.setEntityFacing('left');
@@ -97,12 +111,19 @@ function update() {
     }
 
     if (game.input.keyboard.isDown(Phaser.Keyboard.SHIFT)) {
-        if (player.body.velocity.x !== 0 ) {
-            player.body.velocity.x *= 5;
+        if (player.stamina >= 4) {
+            player.stamina -= 4;
+            if (player.body.velocity.x !== 0 ) {
+                player.body.velocity.x *= 5;
+            }
+            else if (player.body.velocity.y !== 0 ) {
+                player.body.velocity.y *= 5;
+            }
         }
-        else if (player.body.velocity.y !== 0 ) {
-            player.body.velocity.y *= 5;
-        }
+    }
+
+    if (player.stamina < 100){
+        player.stamina++;
     }
 
     // DEBUG
@@ -136,6 +157,7 @@ function update() {
 
 function render() {
     game.debug.text('Player\'s health: ' + player.health, 32, 32);
+    game.debug.text('Player\'s stamina: ' + player.stamina, 32, 64);
     game.debug.text('Wolf\'s health: ' + wolf.health, 770, 32);
 
     if (debugActive) {
