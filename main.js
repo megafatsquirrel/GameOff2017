@@ -9,6 +9,9 @@ var worldLeftSide;
 var pillar;
 var boundGroup;
 
+var playerHealthBar;
+var playerStaminaBar;
+
 function preload() {
     // Set to current bg of 1000x1000
     game.world.setBounds(0, 0, 1000, 1000);
@@ -20,6 +23,8 @@ function preload() {
 
     game.load.image('wolf', 'assets/sprites/imp.png');
     game.load.image('player', 'assets/sprites/player.png');
+    game.load.spritesheet('playerHealthBar', 'assets/sprites/playerHealth.png', 100, 20, 1);
+    game.load.spritesheet('playerStaminaBar', 'assets/sprites/playerStamina.png', 100, 20, 1);
     game.load.spritesheet('sword', 'assets/sprites/sword.png', 20, 40, 1);
     game.load.spritesheet('swordSide', 'assets/sprites/swordSide.png');
     game.load.spritesheet('shield', 'assets/sprites/shield.png');
@@ -65,7 +70,6 @@ function create() {
     blockInput.onDown.add(player.block);
     blockInput.onUp.add(player.clearAttack);
 
-    //wolf.body.immovable = true;
     wolf.body.collideWorldBounds = true;
 
     boundGroup = game.add.physicsGroup();
@@ -81,8 +85,10 @@ function create() {
     graphics.lineTo(50, 220);
     graphics.lineTo(50, 50);
 
-    //var test = game.world.add(0, 0, graphics.drawRect(10, 10, 100, 100));
-    //test.fixedToCamera = true;
+    playerHealthBar = game.add.sprite(32, 20, 'playerHealthBar');
+    playerHealthBar.fixedToCamera = true;
+    playerStaminaBar = game.add.sprite(32, 50, 'playerStaminaBar');
+    playerStaminaBar.fixedToCamera = true;
 
 }
 
