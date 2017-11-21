@@ -5,12 +5,19 @@ var wolf;
 var worldBounds;
 var debugActive = false;
 var attackInput;
+var worldLeftSide;
+var pillar;
+var boundGroup;
 
 function preload() {
     // Set to current bg of 1000x1000
     game.world.setBounds(0, 0, 1000, 1000);
 
     game.load.image('grassField', 'assets/sprites/grassField.png');
+    game.load.image('pillar', 'assets/sprites/pillar.png');
+    game.load.image('leftBounds', 'assets/sprites/leftBounds.png');
+    game.load.image('topBounds', 'assets/sprites/topBounds.png');
+
     game.load.image('wolf', 'assets/sprites/imp.png');
     game.load.image('player', 'assets/sprites/player.png');
     game.load.spritesheet('sword', 'assets/sprites/sword.png', 20, 40, 1);
@@ -21,7 +28,7 @@ function preload() {
 
 function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
-
+    
     worldBounds = game.add.sprite(game.world.centerX, game.world.centerY, 'grassField');
     worldBounds.anchor.set(0.5);
 
@@ -43,9 +50,8 @@ function create() {
     wolf = game.world.add(new Wolf(game.world.centerX - 100, game.world.centerY, 'wolf'));
 
     game.physics.arcade.enable([player, player.sword, player.swordSide, player.shield, player.shieldSide, wolf]);
+
     player.body.collideWorldBounds = true;
-    
-    wolf.body.immovable = true;
     player.swordSide.enableBody = false;
     player.sword.enableBody = false;    
     player.shield.enableBody = false;
@@ -58,6 +64,13 @@ function create() {
     blockInput = game.input.keyboard.addKey(Phaser.Keyboard.Q);
     blockInput.onDown.add(player.block);
     blockInput.onUp.add(player.clearAttack);
+
+    //wolf.body.immovable = true;
+    wolf.body.collideWorldBounds = true;
+
+    boundGroup = game.add.physicsGroup();
+    pillar = boundGroup.create(450, 200, 'pillar');
+    pillar.body.immovable = true;
 
     graphics = game.add.graphics(100, 100);
     graphics.beginFill(0xFF3300);
@@ -152,6 +165,14 @@ function update() {
         player.adjustShieldPosition();
     }
 
+    if (game.physics.arcade.collide(player, boundGroup, collisionHandler, processHandler, this)) {
+        console.log('collide');
+    }
+
+    if (game.physics.arcade.collide(wolf, boundGroup, collisionHandler, processHandler, this)) {
+        console.log('collide - wolf');
+    }
+
     // DEBUG
     if (game.input.keyboard.isDown(Phaser.Keyboard.FIVE)) {
         debugActive = debugActive ? false : true;
@@ -167,9 +188,17 @@ function render() {
         game.debug.bodyInfo(player, 40, 40);
         game.debug.body(player);
         game.debug.body(wolf);
-        game.debug.body(sword);
-        game.debug.body(swordSide);
-        game.debug.body(shield);
-        game.debug.body(shieldSide);
-    }
+        game.debug.body(player.sword);
+        game.debug.body(player.swordSide);
+        game.debug.body(player.shield);
+        game.debug.body(player.shieldSide);
+    }   
+}
+
+function processHandler (player, other) {
+    console.log('processHandler');
+}
+
+function collisionHandler (player, other) {
+    console.log('collisionHandler');
 }
