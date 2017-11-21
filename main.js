@@ -126,18 +126,16 @@ function update() {
         player.stamina++;
     }
 
-    // DEBUG
-    if (game.input.keyboard.isDown(Phaser.Keyboard.FIVE)) {
-        debugActive = debugActive ? false : true;
-    }
-
     if (wolf.alive) {
         game.physics.arcade.collide(player, wolf);
     }
 
     if (player.sword.enableBody || player.swordSide.enableBody) {
-        if (game.physics.arcade.collide(player.sword, wolf) || game.physics.arcade.collide(player.swordSide, wolf)) {
+        if (!player.hasSwordHit &&
+            (game.physics.arcade.collide(player.sword, wolf) || 
+            game.physics.arcade.collide(player.swordSide, wolf))) {
             wolf.handleDamage(player.swordDamage);
+            player.hasSwordHit = true;
         }
         player.sword.position.x = player.position.x;
         player.sword.position.y = player.position.y;
@@ -152,6 +150,11 @@ function update() {
         player.shieldSide.position.x = player.position.x;
         player.shieldSide.position.y = player.position.y;
         player.adjustShieldPosition();
+    }
+
+    // DEBUG
+    if (game.input.keyboard.isDown(Phaser.Keyboard.FIVE)) {
+        debugActive = debugActive ? false : true;
     }
 }
 

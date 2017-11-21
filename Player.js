@@ -89,6 +89,7 @@ class Player extends GameEntity {
 
     clearAttack() {
         player.isAttacking = false;
+        player.hasSwordHit = false;
     }
 
     block() {
