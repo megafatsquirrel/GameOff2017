@@ -10,7 +10,9 @@ var pillar;
 var boundGroup;
 
 var playerHealthBar;
+var playerHealthBarBG;
 var playerStaminaBar;
+var playerStaminaBarBG;
 
 function preload() {
     // Set to current bg of 1000x1000
@@ -22,9 +24,10 @@ function preload() {
     game.load.image('topBounds', 'assets/sprites/topBounds.png');
 
     game.load.image('wolf', 'assets/sprites/imp.png');
+    game.load.image('wolfBite', 'assets/sprites/wolfBite.png');
     game.load.image('player', 'assets/sprites/player.png');
-    game.load.spritesheet('playerHealthBar', 'assets/sprites/playerHealth.png', 100, 20, 1);
-    game.load.spritesheet('playerStaminaBar', 'assets/sprites/playerStamina.png', 100, 20, 1);
+    game.load.spritesheet('playerHealthBar', 'assets/sprites/playerHealth.png', 100, 20, 2);
+    game.load.spritesheet('playerStaminaBar', 'assets/sprites/playerStamina.png', 100, 20, 2);
     game.load.spritesheet('sword', 'assets/sprites/sword.png', 20, 40, 1);
     game.load.spritesheet('swordSide', 'assets/sprites/swordSide.png');
     game.load.spritesheet('shield', 'assets/sprites/shield.png');
@@ -53,14 +56,19 @@ function create() {
     player.shieldSide.visible = false;
         
     wolf = game.world.add(new Wolf(game.world.centerX - 100, game.world.centerY, 'wolf'));
+    wolf.bite = game.add.sprite(wolf.position.x, wolf.position.y, 'wolfBite');
+    wolf.bite.visible = false;
 
-    game.physics.arcade.enable([player, player.sword, player.swordSide, player.shield, player.shieldSide, wolf]);
+    game.physics.arcade.enable([player, player.sword, player.swordSide, player.shield, player.shieldSide, 
+                                wolf, wolf.bite]);
 
     player.body.collideWorldBounds = true;
     player.swordSide.enableBody = false;
     player.sword.enableBody = false;    
     player.shield.enableBody = false;
     player.shieldSide.enableBody = false;
+
+    wolf.bite.enableBody = false;
 
     attackInput = game.input.keyboard.addKey(Phaser.Keyboard.E);
     attackInput.onDown.add(player.attack);
@@ -76,19 +84,18 @@ function create() {
     pillar = boundGroup.create(450, 200, 'pillar');
     pillar.body.immovable = true;
 
-    graphics = game.add.graphics(100, 100);
-    graphics.beginFill(0xFF3300);
-    graphics.lineStyle(10, 0xffd900, 1);
-    graphics.lineTo(250, 50);
-    graphics.lineTo(100, 100);
-    graphics.lineTo(250, 220);
-    graphics.lineTo(50, 220);
-    graphics.lineTo(50, 50);
-
-    playerHealthBar = game.add.sprite(32, 20, 'playerHealthBar');
+    playerHealthBarBG = game.add.sprite(120, 20, 'playerHealthBar');
+    playerHealthBarBG.fixedToCamera = true;
+    playerHealthBarBG.frame = 1;
+    playerHealthBar = game.add.sprite(120, 20, 'playerHealthBar');
     playerHealthBar.fixedToCamera = true;
-    playerStaminaBar = game.add.sprite(32, 50, 'playerStaminaBar');
+    playerHealthBar.frame = 2;
+    playerStaminaBarBG = game.add.sprite(120, 50, 'playerStaminaBar');
+    playerStaminaBarBG.frame = 1;
+    playerStaminaBarBG.fixedToCamera = true;
+    playerStaminaBar = game.add.sprite(120, 50, 'playerStaminaBar');
     playerStaminaBar.fixedToCamera = true;
+    playerStaminaBar.frame = 2;
 
 }
 
@@ -132,6 +139,7 @@ function update() {
     if (game.input.keyboard.isDown(Phaser.Keyboard.SHIFT)) {
         if (player.stamina >= 4) {
             player.stamina -= 4;
+            playerStaminaBar.scale.x = player.stamina / 100;
             if (player.body.velocity.x !== 0 ) {
                 player.body.velocity.x *= 5;
             }
@@ -143,10 +151,20 @@ function update() {
 
     if (player.stamina < 100){
         player.stamina++;
+        playerStaminaBar.scale.x = player.stamina / 100;
     }
 
-    if (wolf.alive) {
-        game.physics.arcade.collide(player, wolf);
+    if (wolf.alive && player.alive) {
+        wolf.attack();
+        if (game.physics.arcade.collide(player, wolf.bite) && !wolf.biteHasHit) {
+            if (player.health > 0) {
+                player.health -= 2;
+                playerHealthBar.scale.x = player.health / 100;
+            }else if (player.health <= 0) {
+                player.kill();
+                // handle game over
+            }
+        }
     }
 
     if (player.sword.enableBody || player.swordSide.enableBody) {
@@ -186,8 +204,8 @@ function update() {
 }
 
 function render() {
-    game.debug.text('Player\'s health: ' + player.health, 32, 32);
-    game.debug.text('Player\'s stamina: ' + player.stamina, 32, 64);
+    game.debug.text('Health', 30, 32);
+    game.debug.text('Stamina', 30, 64);
     game.debug.text('Wolf\'s health: ' + wolf.health, 770, 32);
 
     if (debugActive) {
