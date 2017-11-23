@@ -56,6 +56,7 @@ function create() {
     player.shieldSide.visible = false;
         
     wolf = game.world.add(new Wolf(game.world.centerX - 100, game.world.centerY, 'wolf'));
+    wolf.anchor.setTo(0.5, 0.5);
     wolf.bite = game.add.sprite(wolf.position.x, wolf.position.y, 'wolfBite');
     wolf.bite.anchor.setTo(0.5, 0.5);
     wolf.bite.visible = false;
@@ -181,6 +182,7 @@ function update() {
                 wolf.biteHasHit = true;
                 if (player.health > 0) {
                     player.health -= 2;
+                    game.camera.shake(0.01, 100);
                     playerHealthBar.scale.x = player.health / 100;
                 }else if (player.health <= 0) {
                     player.kill();

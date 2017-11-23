@@ -31,19 +31,16 @@ class Wolf extends GameEntity {
 
     adjustBiteAttack() {
         if(wolf.facing.left) {
-            wolf.bite.position.x -= 10;
-            wolf.bite.position.y += 20;
+            wolf.bite.position.x -= 20;
         }
         if(wolf.facing.right) {
-            wolf.bite.position.x += 40;
-            wolf.bite.position.y += 20;
+            wolf.bite.position.x += 20;
         }
         if(wolf.facing.down) {
-            wolf.bite.position.x += 15;
-            wolf.bite.position.y += 40;
+            wolf.bite.position.y += 20;
         }
         if(wolf.facing.top) {
-            wolf.bite.position.x += 20;
+            wolf.bite.position.y -= 20;
         }
     }
 
