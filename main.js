@@ -107,14 +107,18 @@ function follow() {
         wolf.body.velocity.x = Math.cos(rotation) * 100;
         wolf.body.velocity.y = Math.sin(rotation) * 100;
 
-        if (wolf.body.velocity.x > 0) {
-            wolf.setEntityFacing('right');
-        }else if (wolf.body.velocity.x < 0) {
-            wolf.setEntityFacing('left');
-        }else if (wolf.body.velocity.y > 0) {
-            wolf.setEntityFacing('down');
-        }else if (wolf.body.velocity.y < 0) {
-            wolf.setEntityFacing('top');
+        if (Math.abs(wolf.body.velocity.x) > Math.abs(wolf.body.velocity.y)) {
+            if (wolf.body.velocity.x > 0) {
+                wolf.setEntityFacing('right');
+            }else if (wolf.body.velocity.x < 0) {
+                wolf.setEntityFacing('left');
+            }
+        } else if (Math.abs(wolf.body.velocity.x) < Math.abs(wolf.body.velocity.y)) { 
+            if (wolf.body.velocity.y > 0) {
+                wolf.setEntityFacing('down');
+            }else if (wolf.body.velocity.y < 0) {
+                wolf.setEntityFacing('top');
+            }
         }
 
     } else {
@@ -167,8 +171,12 @@ function update() {
     }
 
     if (wolf.alive && player.alive) {
-        wolf.attack();
-        if (game.physics.arcade.collide(player, wolf.bite)) {
+        var distance = this.game.math.distance(wolf.x, wolf.y, player.x, player.y);
+        if (distance < 50 && !wolf.isAttackOnCooldown) {
+            wolf.attack();
+        }
+        
+        if (wolf.bite.enableBody && game.physics.arcade.collide(player, wolf.bite)) {
             if ( !wolf.biteHasHit ) {
                 wolf.biteHasHit = true;
                 if (player.health > 0) {

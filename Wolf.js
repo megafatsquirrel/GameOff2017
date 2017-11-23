@@ -16,20 +16,16 @@ class Wolf extends GameEntity {
     }
 
     attack() {
-        var distance = this.game.math.distance(wolf.x, wolf.y, player.x, player.y);
-        if (distance <= 40) {
-            // bite
-            if (!wolf.isAttacking && !wolf.isAttackOnCooldown) {
-                wolf.isAttacking = true;
-                wolf.isAttackOnCooldown = true;
-                wolf.bite.position.x = wolf.position.x;
-                wolf.bite.position.y = wolf.position.y;
-                wolf.adjustBiteAttack();
-                wolf.bite.visible = true;
-                wolf.bite.enableBody = true;
-                game.time.events.add(250, wolf.removeAttack, this, true);
-                game.time.events.add(800, wolf.setAttackCooldown, this, true);
-            }
+        if (!wolf.isAttacking) {
+            wolf.isAttacking = true;
+            wolf.isAttackOnCooldown = true;
+            wolf.bite.position.x = wolf.position.x;
+            wolf.bite.position.y = wolf.position.y;
+            wolf.adjustBiteAttack();
+            wolf.bite.visible = true;
+            wolf.bite.enableBody = true;
+            game.time.events.add(150, wolf.removeAttack, this, true);
+            game.time.events.add(1000, wolf.setAttackCooldown, this, true);
         }
     }
 
@@ -39,13 +35,15 @@ class Wolf extends GameEntity {
             wolf.bite.position.y += 20;
         }
         if(wolf.facing.right) {
-            wolf.bite.position.x += 20;
-        }
-        if(wolf.facing.down) {
+            wolf.bite.position.x += 40;
             wolf.bite.position.y += 20;
         }
+        if(wolf.facing.down) {
+            wolf.bite.position.x += 15;
+            wolf.bite.position.y += 40;
+        }
         if(wolf.facing.top) {
-            wolf.bite.position.y -= 20;
+            wolf.bite.position.x += 20;
         }
     }
 
