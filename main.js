@@ -57,6 +57,7 @@ function create() {
         
     wolf = game.world.add(new Wolf(game.world.centerX - 100, game.world.centerY, 'wolf'));
     wolf.bite = game.add.sprite(wolf.position.x, wolf.position.y, 'wolfBite');
+    wolf.bite.anchor.setTo(0.5, 0.5);
     wolf.bite.visible = false;
 
     game.physics.arcade.enable([player, player.sword, player.swordSide, player.shield, player.shieldSide, 
@@ -105,6 +106,17 @@ function follow() {
         var rotation = this.game.math.angleBetween(wolf.x, wolf.y, player.x, player.y);
         wolf.body.velocity.x = Math.cos(rotation) * 100;
         wolf.body.velocity.y = Math.sin(rotation) * 100;
+
+        if (wolf.body.velocity.x > 0) {
+            wolf.setEntityFacing('right');
+        }else if (wolf.body.velocity.x < 0) {
+            wolf.setEntityFacing('left');
+        }else if (wolf.body.velocity.y > 0) {
+            wolf.setEntityFacing('down');
+        }else if (wolf.body.velocity.y < 0) {
+            wolf.setEntityFacing('top');
+        }
+
     } else {
         wolf.body.velocity.setTo(0, 0);
     }
@@ -156,13 +168,16 @@ function update() {
 
     if (wolf.alive && player.alive) {
         wolf.attack();
-        if (game.physics.arcade.collide(player, wolf.bite) && !wolf.biteHasHit) {
-            if (player.health > 0) {
-                player.health -= 2;
-                playerHealthBar.scale.x = player.health / 100;
-            }else if (player.health <= 0) {
-                player.kill();
-                // handle game over
+        if (game.physics.arcade.collide(player, wolf.bite)) {
+            if ( !wolf.biteHasHit ) {
+                wolf.biteHasHit = true;
+                if (player.health > 0) {
+                    player.health -= 2;
+                    playerHealthBar.scale.x = player.health / 100;
+                }else if (player.health <= 0) {
+                    player.kill();
+                    // handle game over
+                }
             }
         }
     }

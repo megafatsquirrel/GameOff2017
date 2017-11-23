@@ -18,7 +18,7 @@ class GameEntity extends Phaser.Sprite {
     };
 
     setEntityFacing(face){
-        if (face && typeof String){
+        if (typeof String && face){
             this.facing.top = face === 'top' ? true : false;
             this.facing.left = face === 'left' ? true : false;
             this.facing.right = face === 'right' ? true : false;

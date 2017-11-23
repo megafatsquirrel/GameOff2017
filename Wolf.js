@@ -4,6 +4,8 @@ class Wolf extends GameEntity {
         this.health = 100;
         this.bite;
         this.biteHasHit;
+        this.attackTimer;
+        this.isAttackOnCooldown;
     }
 
     handleDamage(damage) {
@@ -17,15 +19,38 @@ class Wolf extends GameEntity {
         var distance = this.game.math.distance(wolf.x, wolf.y, player.x, player.y);
         if (distance <= 40) {
             // bite
-            if (!wolf.isAttacking) {
+            if (!wolf.isAttacking && !wolf.isAttackOnCooldown) {
                 wolf.isAttacking = true;
-                wolf.bite.position.x = wolf.position.x - 20;
-                wolf.bite.position.y = wolf.position.y - 20;
+                wolf.isAttackOnCooldown = true;
+                wolf.bite.position.x = wolf.position.x;
+                wolf.bite.position.y = wolf.position.y;
+                wolf.adjustBiteAttack();
                 wolf.bite.visible = true;
                 wolf.bite.enableBody = true;
                 game.time.events.add(250, wolf.removeAttack, this, true);
+                game.time.events.add(800, wolf.setAttackCooldown, this, true);
             }
         }
+    }
+
+    adjustBiteAttack() {
+        if(wolf.facing.left) {
+            wolf.bite.position.x -= 10;
+            wolf.bite.position.y += 20;
+        }
+        if(wolf.facing.right) {
+            wolf.bite.position.x += 20;
+        }
+        if(wolf.facing.down) {
+            wolf.bite.position.y += 20;
+        }
+        if(wolf.facing.top) {
+            wolf.bite.position.y -= 20;
+        }
+    }
+
+    setAttackCooldown() {
+        wolf.isAttackOnCooldown = false;
     }
 
     removeAttack() {
