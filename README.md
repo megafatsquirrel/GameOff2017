@@ -1,9 +1,6 @@
 # GameOff2017
 My Github GameOff 2017 entry
 
-TODO://
-* Create character screen, simple popup from a key press
-
 # Running locally
 * To run locally download or clone the repo
 * Open a command line at the root of this project - GameOff2017

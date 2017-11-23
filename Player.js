@@ -9,6 +9,7 @@ class Player extends GameEntity {
         this.health = 100;
         this.swordDamage = 10;
         this.hasSwordHit = false;
+        this.isBlocking = false;
         this.stamina = 100;
     }
 
@@ -61,11 +62,13 @@ class Player extends GameEntity {
     removeShield() {
         player.shield.visible = false;
         player.shield.enableBody = false;
+        player.isBlocking = false;
     }
 
     removeShieldSide() {
         player.shieldSide.visible = false;
         player.shieldSide.enableBody = false;
+        player.isBlocking = false;
     }
 
     attack() {
@@ -90,11 +93,12 @@ class Player extends GameEntity {
     clearAttack() {
         player.isAttacking = false;
         player.hasSwordHit = false;
+        player.isBlocking = false;
     }
 
     block() {
         if (!player.isAttacking) {
-            player.isAttacking = true;
+            player.isBlocking = true;
             player.shield.position.x = player.position.x;
             player.shield.position.y = player.position.y;
             player.shieldSide.position.x = player.position.x;

@@ -178,16 +178,19 @@ function update() {
         }
         
         if (wolf.bite.enableBody && game.physics.arcade.collide(player, wolf.bite)) {
-            if ( !wolf.biteHasHit ) {
+            if ( !wolf.biteHasHit && !player.isBlocking ) {
                 wolf.biteHasHit = true;
                 if (player.health > 0) {
                     player.health -= 2;
-                    game.camera.shake(0.01, 100);
+                    game.camera.shake(0.001, 100);
                     playerHealthBar.scale.x = player.health / 100;
                 }else if (player.health <= 0) {
                     player.kill();
                     // handle game over
                 }
+            } else if (player.isBlocking) {
+                console.log('BLOCKING');
+                wolf.biteHasHit = true;
             }
         }
     }
