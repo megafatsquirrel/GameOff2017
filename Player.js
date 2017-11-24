@@ -15,18 +15,22 @@ class Player extends GameEntity {
 
     adjustSwordPosition() {
         if(player.facing.top) {
+            player.sword.scale.y = 1;
             player.sword.position.y -= 60; // Add the height of the player
         }
         if(player.facing.left) {
+            player.swordSide.scale.x = -1;
             player.swordSide.position.y -= 10;
-            player.swordSide.position.x -= 100; // Remove the width of the player
+            player.swordSide.position.x -= 20; // Remove the width of the player
         }
         if(player.facing.right) {
+            player.swordSide.scale.x = 1;
             player.swordSide.position.y -= 10;
             player.swordSide.position.x += 20; // Remove the width of the player
         }
         if(player.facing.down) {
-            player.sword.position.y += 20;
+            player.sword.scale.y = -1;
+            player.sword.position.y += 60;
         }
     }
     
@@ -80,10 +84,12 @@ class Player extends GameEntity {
             player.shieldSide.position.y = player.position.y;
             if (player.facing.left || player.facing.right) {
                 player.swordSide.visible = true;
+                player.swordSide.play('stab', 60, false, false);
                 player.swordSide.enableBody = true;
                 game.time.events.add(250, player.removeSwordSide, this, true);
             } else {
                 player.sword.visible = true;
+                player.sword.play('stab', 60, false, false);
                 player.sword.enableBody = true;
                 game.time.events.add(250, player.removeSword, this, true);
             }

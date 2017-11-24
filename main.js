@@ -28,8 +28,8 @@ function preload() {
     game.load.image('player', 'assets/sprites/player.png');
     game.load.spritesheet('playerHealthBar', 'assets/sprites/playerHealth.png', 100, 20, 2);
     game.load.spritesheet('playerStaminaBar', 'assets/sprites/playerStamina.png', 100, 20, 2);
-    game.load.spritesheet('sword', 'assets/sprites/sword.png', 20, 40, 1);
-    game.load.spritesheet('swordSide', 'assets/sprites/swordSide.png');
+    game.load.spritesheet('sword', 'assets/sprites/sword.png', 20, 40, 4);
+    game.load.spritesheet('swordSide', 'assets/sprites/swordSide.png', 40, 20, 4);
     game.load.spritesheet('shield', 'assets/sprites/shield.png');
     game.load.spritesheet('shieldSide', 'assets/sprites/shieldSide.png');
 }
@@ -46,7 +46,9 @@ function create() {
     game.camera.follow(player);
 
     player.sword = game.add.sprite(player.position.x, player.position.y, 'sword');
+    player.sword.animations.add('stab');
     player.swordSide = game.add.sprite(player.position.x, player.position.y, 'swordSide');
+    player.swordSide.animations.add('stab');
     player.sword.visible = false;
     player.swordSide.visible = false;
 
