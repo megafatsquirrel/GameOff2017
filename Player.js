@@ -16,6 +16,7 @@ class Player extends GameEntity {
     adjustSwordPosition() {
         if(player.facing.top) {
             player.sword.scale.y = 1;
+            player.sword.position.x -= 10;
             player.sword.position.y -= 60; // Add the height of the player
         }
         if(player.facing.left) {
@@ -30,6 +31,7 @@ class Player extends GameEntity {
         }
         if(player.facing.down) {
             player.sword.scale.y = -1;
+            player.sword.position.x -= 10;
             player.sword.position.y += 60;
         }
     }

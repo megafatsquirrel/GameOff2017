@@ -25,7 +25,7 @@ function preload() {
 
     game.load.image('wolf', 'assets/sprites/imp.png');
     game.load.image('wolfBite', 'assets/sprites/wolfBite.png');
-    game.load.image('player', 'assets/sprites/player.png');
+    game.load.spritesheet('player', 'assets/sprites/player.png', 40, 40, 16);
     game.load.spritesheet('playerHealthBar', 'assets/sprites/playerHealth.png', 100, 20, 2);
     game.load.spritesheet('playerStaminaBar', 'assets/sprites/playerStamina.png', 100, 20, 2);
     game.load.spritesheet('sword', 'assets/sprites/sword.png', 20, 40, 4);
@@ -41,6 +41,10 @@ function create() {
     worldBounds.anchor.set(0.5);
 
     player = game.world.add(new Player(40, 40, 'player'));
+    player.animations.add('walkDown', [0, 1, 2, 3], 30, false);
+    player.animations.add('walkRight', [4, 5, 6, 7], 30, false);
+    player.animations.add('walkLeft', [8, 9, 10, 11], 30, false);
+    player.animations.add('walkUp', [12, 13, 14, 15], 30, false);
     
     player.anchor.setTo(0.5, 0.5);
     game.camera.follow(player);
@@ -136,10 +140,12 @@ function update() {
     if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
         player.setEntityFacing('left');
         player.body.velocity.x = -player.speed;
+        player.animations.play('walkLeft');
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
         player.setEntityFacing('right');
         player.body.velocity.x = player.speed;
+        player.animations.play('walkRight');
     } else {
         player.body.velocity.x = 0;
     }
@@ -147,10 +153,12 @@ function update() {
     if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
         player.setEntityFacing('top');
         player.body.velocity.y = -player.speed;
+        player.animations.play('walkUp');
     }
     else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
         player.setEntityFacing('down');
         player.body.velocity.y = player.speed;
+        player.animations.play('walkDown');
     } else {
         player.body.velocity.y = 0;
     }
