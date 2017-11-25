@@ -2,6 +2,7 @@ class Player extends GameEntity {
     constructor(x, y, key) {
         super(x, y, key);
         this.playerText = '';
+        this.swordAudio;
         this.sword;
         this.swordSide;
         this.shield;
@@ -11,6 +12,7 @@ class Player extends GameEntity {
         this.hasSwordHit = false;
         this.isBlocking = false;
         this.stamina = 100;
+        this.attackBtnDown = false;
     }
 
     adjustSwordPosition() {
@@ -58,27 +60,31 @@ class Player extends GameEntity {
     removeSword() {
         player.sword.visible = false;
         player.sword.enableBody = false;
+        player.clearAttack()
     }
 
     removeSwordSide() {
         player.swordSide.visible = false;
         player.swordSide.enableBody = false;
+        player.clearAttack()
     }
 
     removeShield() {
         player.shield.visible = false;
         player.shield.enableBody = false;
-        player.isBlocking = false;
+        player.clearAttack()
     }
 
     removeShieldSide() {
         player.shieldSide.visible = false;
         player.shieldSide.enableBody = false;
-        player.isBlocking = false;
+        player.clearAttack()
     }
 
     attack() {
+        player.setButtonDown();
         if (!player.isAttacking) {
+            player.swordAudio.play();
             player.isAttacking = true;
             player.sword.position.x = player.position.x;
             player.sword.position.y = player.position.y;
@@ -88,12 +94,12 @@ class Player extends GameEntity {
                 player.swordSide.visible = true;
                 player.swordSide.play('stab', 60, false, false);
                 player.swordSide.enableBody = true;
-                game.time.events.add(250, player.removeSwordSide, this, true);
+                game.time.events.add(500, player.removeSwordSide, this, true);
             } else {
                 player.sword.visible = true;
                 player.sword.play('stab', 60, false, false);
                 player.sword.enableBody = true;
-                game.time.events.add(250, player.removeSword, this, true);
+                game.time.events.add(500, player.removeSword, this, true);
             }
         }
     }
@@ -104,7 +110,16 @@ class Player extends GameEntity {
         player.isBlocking = false;
     }
 
+    setButtonDown() {
+        player.attackBtnDown = true;
+    }
+
+    clearButtonDown() {
+        player.attackBtnDown = false;
+    }
+
     block() {
+        player.setButtonDown();
         if (!player.isAttacking) {
             player.isBlocking = true;
             player.shield.position.x = player.position.x;
