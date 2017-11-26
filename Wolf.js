@@ -20,6 +20,7 @@ class Wolf extends GameEntity {
         if (!wolf.isAttacking) {
             wolf.isAttacking = true;
             wolf.isAttackOnCooldown = true;
+            wolf.bite.body.velocity = 0;
             wolf.bite.position.x = wolf.position.x;
             wolf.bite.position.y = wolf.position.y;
             wolf.adjustBiteAttack();

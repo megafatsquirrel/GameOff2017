@@ -38,14 +38,18 @@ class GameEntity extends Phaser.Sprite {
             if (Math.abs(this.body.velocity.x) > Math.abs(this.body.velocity.y)) {
                 if (this.body.velocity.x > 0) {
                     this.setEntityFacing('right');
+                    this.frame = 2;
                 }else if (this.body.velocity.x < 0) {
                     this.setEntityFacing('left');
+                    this.frame = 1;
                 }
             } else if (Math.abs(this.body.velocity.x) < Math.abs(this.body.velocity.y)) { 
                 if (this.body.velocity.y > 0) {
                     this.setEntityFacing('down');
+                    this.frame = 0;
                 }else if (this.body.velocity.y < 0) {
                     this.setEntityFacing('top');
+                    this.frame = 3;
                 }
             }
 

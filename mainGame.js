@@ -94,7 +94,10 @@ mainGame.prototype = {
         playerStaminaBar.frame = 2;
     },
     update: function() {
-        wolf.ai();
+
+        if (wolf.alive) {
+            wolf.ai();
+        }
 
         // MOVEMENT
         if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {

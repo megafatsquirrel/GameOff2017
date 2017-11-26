@@ -10,7 +10,7 @@ preload.prototype = {
         game.load.image('pillar', 'assets/sprites/pillar.png');
         game.load.image('leftBounds', 'assets/sprites/leftBounds.png');
         game.load.image('topBounds', 'assets/sprites/topBounds.png');
-        game.load.image('wolf', 'assets/sprites/imp.png');
+        game.load.spritesheet('wolf', 'assets/sprites/wolf.png', 40, 40, 4);
         game.load.image('wolfBite', 'assets/sprites/wolfBite.png');
         game.load.spritesheet('player', 'assets/sprites/player.png', 40, 40, 16);
         game.load.spritesheet('playerHealthBar', 'assets/sprites/playerHealth.png', 100, 20, 2);
