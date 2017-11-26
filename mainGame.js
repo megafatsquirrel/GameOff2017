@@ -94,7 +94,7 @@ mainGame.prototype = {
         playerStaminaBar.frame = 2;
     },
     update: function() {
-        wolf.follow(player);
+        wolf.ai();
 
         // MOVEMENT
         if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
@@ -141,27 +141,20 @@ mainGame.prototype = {
             playerStaminaBar.scale.x = player.stamina / 100;
         }
 
-        if (wolf.alive && player.alive) {
-            var distance = this.game.math.distance(wolf.x, wolf.y, player.x, player.y);
-            if (distance < 50 && !wolf.isAttackOnCooldown) {
-                wolf.attack();
-            }
-            
-            if (wolf.bite.enableBody && game.physics.arcade.collide(player, wolf.bite)) {
-                if ( !wolf.biteHasHit && !player.isBlocking ) {
-                    wolf.biteHasHit = true;
-                    if (player.health > 0) {
-                        player.health -= 2;
-                        game.camera.shake(0.001, 100);
-                        playerHealthBar.scale.x = player.health / 100;
-                    }else if (player.health <= 0) {
-                        player.kill();
-                        // handle game over
-                    }
-                } else if (player.isBlocking) {
-                    console.log('BLOCKING');
-                    wolf.biteHasHit = true;
+        if (wolf.bite.enableBody && game.physics.arcade.collide(player, wolf.bite)) {
+            if ( !wolf.biteHasHit && !player.isBlocking ) {
+                wolf.biteHasHit = true;
+                if (player.health > 0) {
+                    player.health -= 2;
+                    game.camera.shake(0.001, 100);
+                    playerHealthBar.scale.x = player.health / 100;
+                }else if (player.health <= 0) {
+                    player.kill();
+                    // handle game over
                 }
+            } else if (player.isBlocking) {
+                console.log('BLOCKING');
+                wolf.biteHasHit = true;
             }
         }
 

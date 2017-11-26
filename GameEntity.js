@@ -53,4 +53,30 @@ class GameEntity extends Phaser.Sprite {
             this.body.velocity.setTo(0, 0);
         }
     }
+
+    retreat(target) {
+        var distance = this.game.math.distance(this.x, this.y, target.x, target.y);
+        if (distance > 100) {
+            var rotation = this.game.math.angleBetween(this.x, this.y, target.x, target.y);
+            this.body.velocity.x = (Math.cos(rotation) * 100) * -1;
+            this.body.velocity.y = (Math.sin(rotation) * 100) * -1;
+
+            if (Math.abs(this.body.velocity.x) > Math.abs(this.body.velocity.y)) {
+                if (this.body.velocity.x > 0) {
+                    this.setEntityFacing('right');
+                }else if (this.body.velocity.x < 0) {
+                    this.setEntityFacing('left');
+                }
+            } else if (Math.abs(this.body.velocity.x) < Math.abs(this.body.velocity.y)) { 
+                if (this.body.velocity.y > 0) {
+                    this.setEntityFacing('down');
+                }else if (this.body.velocity.y < 0) {
+                    this.setEntityFacing('top');
+                }
+            }
+
+        } else {
+            this.body.velocity.setTo(0, 0);
+        }
+    }
 } 

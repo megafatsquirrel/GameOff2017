@@ -5,6 +5,7 @@ class Wolf extends GameEntity {
         this.bite;
         this.biteHasHit;
         this.attackTimer;
+        this.isRetreating;
         this.isAttackOnCooldown;
     }
 
@@ -53,5 +54,18 @@ class Wolf extends GameEntity {
         wolf.bite.enableBody = false;
         wolf.isAttacking = false;
         wolf.biteHasHit = false;
+    }
+
+    ai() {
+        var distance = this.game.math.distance(wolf.x, wolf.y, player.x, player.y);
+        if ( wolf.health >= 60 && distance >= 60) {
+            wolf.follow(player);
+        } else {
+            wolf.follow(player);
+        }
+        
+        if (distance <= 50 && !wolf.isAttackOnCooldown) {
+            wolf.attack();
+        }
     }
 }
