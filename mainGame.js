@@ -93,33 +93,8 @@ mainGame.prototype = {
         playerStaminaBar.fixedToCamera = true;
         playerStaminaBar.frame = 2;
     },
-    follow: function() {
-        var distance = this.game.math.distance(wolf.x, wolf.y, player.x, player.y);
-        if (distance > 40) {
-            var rotation = this.game.math.angleBetween(wolf.x, wolf.y, player.x, player.y);
-            wolf.body.velocity.x = Math.cos(rotation) * 100;
-            wolf.body.velocity.y = Math.sin(rotation) * 100;
-
-            if (Math.abs(wolf.body.velocity.x) > Math.abs(wolf.body.velocity.y)) {
-                if (wolf.body.velocity.x > 0) {
-                    wolf.setEntityFacing('right');
-                }else if (wolf.body.velocity.x < 0) {
-                    wolf.setEntityFacing('left');
-                }
-            } else if (Math.abs(wolf.body.velocity.x) < Math.abs(wolf.body.velocity.y)) { 
-                if (wolf.body.velocity.y > 0) {
-                    wolf.setEntityFacing('down');
-                }else if (wolf.body.velocity.y < 0) {
-                    wolf.setEntityFacing('top');
-                }
-            }
-
-        } else {
-            wolf.body.velocity.setTo(0, 0);
-        }
-    },
     update: function() {
-        this.follow();
+        wolf.follow(player);
 
         // MOVEMENT
         if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
