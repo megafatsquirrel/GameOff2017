@@ -58,14 +58,18 @@ class Wolf extends GameEntity {
 
     ai() {
         var distance = this.game.math.distance(wolf.x, wolf.y, player.x, player.y);
-        if ( wolf.health >= 60 && distance >= 60) {
+        if ( wolf.health > 0 && distance >= 60 && !wolf.isRetreating) {
             wolf.follow(player);
         } else {
-            wolf.follow(player);
+            wolf.retreat(player);
         }
         
-        if (distance <= 50 && !wolf.isAttackOnCooldown) {
+        if (distance <= 60 && !wolf.isAttackOnCooldown) {
             wolf.attack();
         }
+    }
+
+    removeRetreating() {
+        wolf.isRetreating = false;
     }
 }

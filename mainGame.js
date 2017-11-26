@@ -144,6 +144,8 @@ mainGame.prototype = {
         if (wolf.bite.enableBody && game.physics.arcade.collide(player, wolf.bite)) {
             if ( !wolf.biteHasHit && !player.isBlocking ) {
                 wolf.biteHasHit = true;
+                wolf.isRetreating = true;
+                game.time.events.add(game.rnd.integerInRange(1000, 5000), wolf.removeRetreating, this, true);
                 if (player.health > 0) {
                     player.health -= 2;
                     game.camera.shake(0.001, 100);
