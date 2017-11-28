@@ -12,6 +12,10 @@ var playerHealthBarBG;
 var playerStaminaBar;
 var playerStaminaBarBG;
 
+var mainLayer;
+var attackLayer;
+var bgLayer;
+
 var mainGame = function(game) {};
 
 mainGame.prototype = {
@@ -49,11 +53,13 @@ mainGame.prototype = {
         player.shield.visible = false;
         player.shieldSide.visible = false;
             
+        
         wolf = game.world.add(new Wolf(game.world.centerX - 100, game.world.centerY, 'wolf'));
         wolf.anchor.setTo(0.5, 0.5);
-        wolf.bite = game.add.sprite(wolf.position.x, wolf.position.y, 'wolfBite');
         wolf.bite.anchor.setTo(0.5, 0.5);
         wolf.bite.visible = false;
+        wolf.dangerAreaSide.visible = false;
+        wolf.dangerAreaTop.visible = false;
 
         game.physics.arcade.enable([player, player.sword, player.swordSide, player.shield, player.shieldSide, 
                                     wolf, wolf.bite]);
@@ -65,6 +71,11 @@ mainGame.prototype = {
         player.shieldSide.enableBody = false;
 
         wolf.bite.enableBody = false;
+
+        // create layers
+        mainLayer = game.add.group();
+        mainLayer.add(wolf);
+        mainLayer.add(player);
 
         attackInput = game.input.keyboard.addKey(Phaser.Keyboard.E);
         attackInput.onDown.add(player.attack);
@@ -95,7 +106,7 @@ mainGame.prototype = {
     },
     update: function() {
 
-        if (wolf.alive) {
+        if (wolf.alive && !wolf.isSpecialAttack) {
             wolf.ai();
         }
 

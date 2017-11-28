@@ -15,4 +15,7 @@ My Github GameOff 2017 entry
 - Press Q to block
 - Press E to Attack
 
+# Backstory
+You awake to find yourself in a dusty arena, but you are not alone. From the shadows comes a growl. Not a growl to warn, but to indicate intent. Soon a fight would be upon you, do you survive or perish...   
+
 
