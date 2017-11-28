@@ -106,10 +106,10 @@ mainGame.prototype = {
     },
     update: function() {
 
-        if (wolf.alive && !wolf.isSpecialAttack) {
-            wolf.ai();
+        if (wolf.alive) {
+            wolf.logic();
         }
-
+        
         // MOVEMENT
         if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
             player.setEntityFacing('left');

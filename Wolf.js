@@ -100,20 +100,22 @@ class Wolf extends GameEntity {
                 wolf.dangerAreaSide.visible = true;
             }
 
-            wolf.specialAttackTimer = game.time.events.add(2000, wolf.clearSpecialAttack, this, true);
+            wolf.specialAttackTimer = game.time.events.add(1500, wolf.clearSpecialAttack, this, true);
             wolf.clearDangerAreaTimer = game.time.events.add(1000, wolf.clearDangerArea, this, true);
-            game.time.events.add(1000, wolf.executeSpecial, this, true);
         }
     }
 
     clearDangerArea() {
         wolf.dangerAreaSide.visible = false;
         wolf.dangerAreaTop.visible = false;
+        wolf.executeSpecial();
     }
 
     clearSpecialAttack() {
         wolf.isSpecialAttack = false;
         wolf.isSpecialAttackOnCooldown = false;
+        wolf.bite.enableBody = false;
+        wolf.bite.visible = false;
         wolf.specialAttackTimer = game.time.events.add(5000, wolf.specialAttack, this, true);
     }
 
@@ -130,4 +132,16 @@ class Wolf extends GameEntity {
             wolf.body.velocity.x = -600;
         }
     }
+
+    logic() {
+        if (!wolf.isSpecialAttack) {
+            wolf.ai();
+        }
+
+        if (wolf.bite.visible && wolf.isSpecialAttack) {
+            wolf.bite.body.position.x = wolf.body.position.x;
+            wolf.bite.body.position.y = wolf.body.position.y;
+        }
+    }
+    
 }
