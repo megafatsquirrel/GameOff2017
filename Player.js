@@ -190,7 +190,6 @@ class Player extends GameEntity {
             bloodEmitter.y = player.body.position.y + 10;
             bloodEmitter.gravity = 500;
             bloodEmitter.start(true, 800, null, game.rnd.integerInRange(2, 10));
-
             player.handleDamage();
             
         } else if (player.isBlocking) {
@@ -211,8 +210,6 @@ class Player extends GameEntity {
             
         if (player.health <= 0) {
             player.kill();
-            var style = { font: "64px Arial", fill: "#ff0044", align: "center" };
-            game.add.text(400, 220, 'DEFEAT', style);
         }
     }
 }
