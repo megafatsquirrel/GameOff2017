@@ -192,7 +192,7 @@ mainGame.prototype = {
     gameOver: function() {
         worldBounds.inputEnabled = true;
         worldBounds.events.onInputDown.add(this.restartGame, this);
-        var style = { font: "64px Arial", fill: "#ff0044", align: "center" };
+        var style = { font: "64px Arial", fill: "#000000", align: "center" };
         var gameOverText = game.add.text(400, 220, 'DEFEAT', style);
         gameOverText.fixedToCamera = true;
         game.time.events.add(4000, this.addHelperText, this, true);
@@ -201,7 +201,7 @@ mainGame.prototype = {
         this.game.state.start('startScreen', startScreen);
     },
     addHelperText: function() {
-        var style = { font: "32px Arial", fill: "#ff0044", align: "center" };
+        var style = { font: "32px Arial", fill: "#000000", align: "center" };
         var gameOverHelperText = game.add.text(410, 280, '(click to restart)', style);
         gameOverHelperText.fixedToCamera = true;
     }
