@@ -190,11 +190,11 @@ mainGame.prototype = {
         console.log('collisionHandler');
     },
     gameOver: function() {
-        mainLayer.add(worldBounds);
         worldBounds.inputEnabled = true;
         worldBounds.events.onInputDown.add(this.restartGame, this);
         var style = { font: "64px Arial", fill: "#ff0044", align: "center" };
-        game.add.text(400, 220, 'DEFEAT', style);
+        var gameOverText = game.add.text(400, 220, 'DEFEAT', style);
+        gameOverText.fixedToCamera = true;
         game.time.events.add(4000, this.addHelperText, this, true);
     },
     restartGame: function() {
@@ -202,6 +202,7 @@ mainGame.prototype = {
     },
     addHelperText: function() {
         var style = { font: "32px Arial", fill: "#ff0044", align: "center" };
-        game.add.text(410, 280, '(click to restart)', style);
+        var gameOverHelperText = game.add.text(410, 280, '(click to restart)', style);
+        gameOverHelperText.fixedToCamera = true;
     }
 }
