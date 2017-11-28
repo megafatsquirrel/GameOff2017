@@ -31,7 +31,7 @@ mainGame.prototype = {
         worldBounds = game.add.sprite(game.world.centerX, game.world.centerY, 'grassField');
         worldBounds.anchor.set(0.5);
 
-        player = game.world.add(new Player(40, 40, 'player'));
+        player = game.world.add(new Player(500, 40, 'player'));
         player.animations.add('walkDown', [0, 1, 2, 3], 30, false);
         player.animations.add('walkRight', [4, 5, 6, 7], 30, false);
         player.animations.add('walkLeft', [8, 9, 10, 11], 30, false);
@@ -129,11 +129,8 @@ mainGame.prototype = {
             player.handleHit();
         }
 
-        if (player.sword.enableBody || player.swordSide.enableBody) {
-            if (!player.hasSwordHit &&
-                (game.physics.arcade.collide(player.sword, wolf) || 
-                game.physics.arcade.collide(player.swordSide, wolf))) {
-                
+        if ((player.sword.enableBody || player.swordSide.enableBody) && !player.hasSwordHit) {
+            if (game.physics.arcade.collide(player.sword, wolf) || game.physics.arcade.collide(player.swordSide, wolf)) {    
                     bloodEmitter.x = wolf.body.position.x;
                     bloodEmitter.y = wolf.body.position.y;
                     bloodEmitter.start(true, 500, null, 4);
@@ -162,6 +159,8 @@ mainGame.prototype = {
 
         if (game.physics.arcade.collide(wolf, boundGroup, this.collisionHandler, this.processHandler, this)) {
             console.log('collide - wolf');
+            wolf.isRetreating = true;
+            game.time.events.add(1000, wolf.removeRetreating, this, true);
         }
 
         // DEBUG
@@ -203,6 +202,6 @@ mainGame.prototype = {
     },
     addHelperText: function() {
         var style = { font: "32px Arial", fill: "#ff0044", align: "center" };
-        game.add.text(400, 280, '(click to restart)', style);
+        game.add.text(410, 280, '(click to restart)', style);
     }
 }
