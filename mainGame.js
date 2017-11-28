@@ -164,8 +164,10 @@ mainGame.prototype = {
                     player.health -= 2;
                     if (wolf.isSpecialAttack) {
                         player.health -= 60;
+                        game.camera.shake(0.1, 100);
+                    }else{
+                        game.camera.shake(0.001, 100);
                     }
-                    game.camera.shake(0.001, 100);
                     playerHealthBar.scale.x = player.health / 100;
                 }else if (player.health <= 0) {
                     player.kill();
