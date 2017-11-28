@@ -122,34 +122,9 @@ mainGame.prototype = {
             playerStaminaBar.scale.x = player.stamina / 100;
         }
 
+        // check wolf hit
         if (wolf.bite.enableBody && game.physics.arcade.collide(player, wolf.bite)) {
-            if ( !wolf.biteHasHit && !player.isBlocking ) {
-                wolf.biteHasHit = true;
-                wolf.isRetreating = true;
-                game.time.events.add(game.rnd.integerInRange(1000, 5000), wolf.removeRetreating, this, true);
-                bloodEmitter.x = player.body.position.x + 10;
-                bloodEmitter.y = player.body.position.y + 10;
-                bloodEmitter.gravity = 500;
-                bloodEmitter.start(true, 800, null, game.rnd.integerInRange(2, 10));
-                if (player.health > 0) {
-                    player.health -= 15;
-                    if (wolf.isSpecialAttack) {
-                        player.health -= 60;
-                        game.camera.shake(0.1, 100);
-                    }else{
-                        game.camera.shake(0.001, 100);
-                    }
-                    playerHealthBar.scale.x = player.health / 100;
-                }else if (player.health <= 0) {
-                    player.kill();
-                    var style = { font: "64px Arial", fill: "#ff0044", align: "center" };
-                    game.add.text(400, 500, 'DEFEAT', style);
-                    game.time.events.add(5000, this.gameOver(), this, true);
-                }
-            } else if (player.isBlocking) {
-                console.log('BLOCKING');
-                wolf.biteHasHit = true;
-            }
+            player.handleHit();
         }
 
         if (player.sword.enableBody || player.swordSide.enableBody) {

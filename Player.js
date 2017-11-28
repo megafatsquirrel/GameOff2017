@@ -180,4 +180,39 @@ class Player extends GameEntity {
             }
         }
     }
+
+    handleHit() {
+        if ( !wolf.biteHasHit && !player.isBlocking ) {
+            wolf.biteHasHit = true;
+            wolf.isRetreating = true;
+            game.time.events.add(game.rnd.integerInRange(1000, 5000), wolf.removeRetreating, this, true);
+            bloodEmitter.x = player.body.position.x + 10;
+            bloodEmitter.y = player.body.position.y + 10;
+            bloodEmitter.gravity = 500;
+            bloodEmitter.start(true, 800, null, game.rnd.integerInRange(2, 10));
+
+            player.handleDamage();
+            
+        } else if (player.isBlocking) {
+            console.log('BLOCKING');
+            wolf.biteHasHit = true;
+        }
+    }
+
+    handleDamage() {
+        if (wolf.isSpecialAttack) {
+            player.health -= 60;
+            game.camera.shake(0.1, 100);
+        }else{
+            player.health -= 15;
+            game.camera.shake(0.001, 100);
+        }
+        playerHealthBar.scale.x = player.health / 100;
+            
+        if (player.health <= 0) {
+            player.kill();
+            var style = { font: "64px Arial", fill: "#ff0044", align: "center" };
+            game.add.text(400, 220, 'DEFEAT', style);
+        }
+    }
 }
