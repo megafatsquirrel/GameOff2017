@@ -163,11 +163,12 @@ mainGame.prototype = {
                 wolf.biteHasHit = true;
                 wolf.isRetreating = true;
                 game.time.events.add(game.rnd.integerInRange(1000, 5000), wolf.removeRetreating, this, true);
-                bloodEmitter.x = player.body.position.x;
-                bloodEmitter.y = player.body.position.y;
-                bloodEmitter.start(true, 500, null, game.rnd.integerInRange(10, 50));
+                bloodEmitter.x = player.body.position.x + 10;
+                bloodEmitter.y = player.body.position.y + 10;
+                bloodEmitter.gravity = 500;
+                bloodEmitter.start(true, 800, null, game.rnd.integerInRange(2, 10));
                 if (player.health > 0) {
-                    player.health -= 2;
+                    player.health -= 15;
                     if (wolf.isSpecialAttack) {
                         player.health -= 60;
                         game.camera.shake(0.1, 100);
@@ -177,7 +178,9 @@ mainGame.prototype = {
                     playerHealthBar.scale.x = player.health / 100;
                 }else if (player.health <= 0) {
                     player.kill();
-                    this.gameOver();
+                    var style = { font: "64px Arial", fill: "#ff0044", align: "center" };
+                    game.add.text(400, 500, 'DEFEAT', style);
+                    game.time.events.add(5000, this.gameOver(), this, true);
                 }
             } else if (player.isBlocking) {
                 console.log('BLOCKING');
@@ -190,9 +193,10 @@ mainGame.prototype = {
                 (game.physics.arcade.collide(player.sword, wolf) || 
                 game.physics.arcade.collide(player.swordSide, wolf))) {
                 
-                    bloodEmitter.x = player.body.position.x;
-                    bloodEmitter.y = player.body.position.y;
-                    bloodEmitter.start(true, 500, null, 10);
+                    bloodEmitter.x = wolf.body.position.x;
+                    bloodEmitter.y = wolf.body.position.y;
+                    bloodEmitter.start(true, 500, null, 4);
+                    bloodEmitter.gravity = 500;
                     wolf.handleDamage(player.swordDamage);
                     player.hasSwordHit = true;
             }
@@ -244,5 +248,8 @@ mainGame.prototype = {
     },
     collisionHandler: function(player, other) {
         console.log('collisionHandler');
+    },
+    gameOver: function() {
+        this.game.state.start('startScreen', startScreen);
     }
 }
