@@ -21,6 +21,7 @@ preload.prototype = {
         game.load.spritesheet('shieldSide', 'assets/sprites/shieldSide.png');
         game.load.image('dangerSide', 'assets/sprites/dangerStrip240x40.png');
         game.load.image('dangerTop', 'assets/sprites/dangerStrip40x240.png');
+        game.load.image('blood', 'assets/sprites/blood.png');
 	},
   	create: function(){
         swordAudio = game.add.audio('stab');
