@@ -138,5 +138,46 @@ class Player extends GameEntity {
             }        
         }
     }
-    
+
+    handleInput() {
+        // MOVEMENT
+        if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+            player.setEntityFacing('left');
+            player.body.velocity.x = -player.speed;
+            player.animations.play('walkLeft');
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
+            player.setEntityFacing('right');
+            player.body.velocity.x = player.speed;
+            player.animations.play('walkRight');
+        } else {
+            player.body.velocity.x = 0;
+        }
+
+        if (game.input.keyboard.isDown(Phaser.Keyboard.W)) {
+            player.setEntityFacing('top');
+            player.body.velocity.y = -player.speed;
+            player.animations.play('walkUp');
+        }
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.S)) {
+            player.setEntityFacing('down');
+            player.body.velocity.y = player.speed;
+            player.animations.play('walkDown');
+        } else {
+            player.body.velocity.y = 0;
+        }
+
+        if (game.input.keyboard.isDown(Phaser.Keyboard.SHIFT)) {
+            if (player.stamina >= 4) {
+                player.stamina -= 4;
+                playerStaminaBar.scale.x = player.stamina / 100;
+                if (player.body.velocity.x !== 0 ) {
+                    player.body.velocity.x *= 5;
+                }
+                else if (player.body.velocity.y !== 0 ) {
+                    player.body.velocity.y *= 5;
+                }
+            }
+        }
+    }
 }
