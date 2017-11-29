@@ -24,7 +24,7 @@ var mainGame = function(game) {};
 
 mainGame.prototype = {
     preload: function() {
-        game.world.setBounds(0, 0, 1000, 700);
+        game.world.setBounds(0, 0, 1000, 600);
     },
     create: function() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
