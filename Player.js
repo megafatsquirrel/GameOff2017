@@ -8,7 +8,7 @@ class Player extends GameEntity {
         this.shield;
         this.shieldSide;
         this.health = 100;
-        this.swordDamage = 100;
+        this.swordDamage = 10;
         this.hasSwordHit = false;
         this.isBlocking = false;
         this.stamina = 100;
@@ -83,7 +83,8 @@ class Player extends GameEntity {
 
     attack() {
         player.setButtonDown();
-        if (!player.isAttacking) {
+        if (!player.isAttacking && player.stamina >= 10) {
+            player.stamina -= 10;
             player.swordAudio.play();
             player.isAttacking = true;
             player.sword.position.x = player.position.x;
@@ -120,7 +121,8 @@ class Player extends GameEntity {
 
     block() {
         player.setButtonDown();
-        if (!player.isAttacking) {
+        if (!player.isAttacking && player.stamina >= 10) {
+            player.stamina -= 10;
             player.isBlocking = true;
             player.shield.position.x = player.position.x;
             player.shield.position.y = player.position.y;
@@ -182,7 +184,7 @@ class Player extends GameEntity {
     }
 
     handleHit() {
-        if ( !wolf.biteHasHit && !player.isBlocking ) {
+        if (!wolf.biteHasHit && !player.isBlocking) {
             wolf.biteHasHit = true;
             wolf.isRetreating = true;
             game.time.events.add(game.rnd.integerInRange(1000, 5000), wolf.removeRetreating, this, true);
