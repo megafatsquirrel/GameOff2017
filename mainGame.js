@@ -18,6 +18,8 @@ var mainLayer;
 var attackLayer;
 var bgLayer;
 
+var uiStyle = { font: "18px Arial", fill: "#ffffff", align: "left" };
+
 var mainGame = function(game) {};
 
 mainGame.prototype = {
@@ -52,14 +54,16 @@ mainGame.prototype = {
         player.shieldSide = game.add.sprite(player.position.x, player.position.y, 'shieldSide');
         player.shield.visible = false;
         player.shieldSide.visible = false;
-            
         
         wolf = game.world.add(new Wolf(game.world.centerX - 100, game.world.centerY, 'wolf'));
         wolf.anchor.setTo(0.5, 0.5);
         wolf.bite.anchor.setTo(0.5, 0.5);
         wolf.bite.visible = false;
+        wolf.bite.alpha = 0.4;
         wolf.dangerAreaSide.visible = false;
         wolf.dangerAreaTop.visible = false;
+        wolf.dangerAreaSide.alpha = 0.3;
+        wolf.dangerAreaTop.alpha = 0.3;
 
         game.physics.arcade.enable([player, player.sword, player.swordSide, player.shield, player.shieldSide, 
                                     wolf, wolf.bite]);
@@ -76,6 +80,8 @@ mainGame.prototype = {
         mainLayer = game.add.group();
         mainLayer.add(wolf);
         mainLayer.add(player);
+        mainLayer.add(player.shield);
+        mainLayer.add(player.shieldSide);
 
         attackInput = game.input.keyboard.addKey(Phaser.Keyboard.E);
         attackInput.onDown.add(player.attack);
@@ -106,6 +112,11 @@ mainGame.prototype = {
         playerStaminaBar = game.add.sprite(120, 50, 'playerStaminaBar');
         playerStaminaBar.fixedToCamera = true;
         playerStaminaBar.frame = 2;
+
+        var playerHealthText = game.add.text(30, 20, 'Health', uiStyle);
+        playerHealthText.fixedToCamera = true;
+        var playerStaminaText = game.add.text(30, 50, 'Stamina', uiStyle);
+        playerStaminaText.fixedToCamera = true;
     },
     update: function() {
 
@@ -169,8 +180,6 @@ mainGame.prototype = {
         }
     },
     render: function() {
-        game.debug.text('Health', 30, 32);
-        game.debug.text('Stamina', 30, 64);
         game.debug.text('Wolf\'s health: ' + wolf.health, 770, 32);
 
         if (debugActive) {
