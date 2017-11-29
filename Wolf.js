@@ -82,7 +82,7 @@ class Wolf extends GameEntity {
     }
 
     specialAttack() {
-        if (!wolf.isSpecialAttackOnCooldown && !wolf.isSpecialAttack) {
+        if (!wolf.isSpecialAttackOnCooldown && !wolf.isSpecialAttack && wolf.alive) {
             wolf.isSpecialAttack = true;
             wolf.isSpecialAttackOnCooldown = true;
             wolf.body.velocity.x = 0;

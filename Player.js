@@ -8,7 +8,7 @@ class Player extends GameEntity {
         this.shield;
         this.shieldSide;
         this.health = 100;
-        this.swordDamage = 10;
+        this.swordDamage = 100;
         this.hasSwordHit = false;
         this.isBlocking = false;
         this.stamina = 100;

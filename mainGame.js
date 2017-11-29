@@ -24,8 +24,7 @@ var mainGame = function(game) {};
 
 mainGame.prototype = {
     preload: function() {
-        // Set to current bg of 1000x1000
-        game.world.setBounds(0, 0, 1000, 1000);
+        game.world.setBounds(0, 0, 1000, 700);
     },
     create: function() {
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -122,6 +121,8 @@ mainGame.prototype = {
 
         if (wolf.alive) {
             wolf.logic();
+        } else if (!wolf.alive) {
+            this.winGame();
         }
 
         if (player.alive){
@@ -198,10 +199,15 @@ mainGame.prototype = {
     collisionHandler: function(player, other) {
         console.log('collisionHandler');
     },
+    winGame: function() {
+        var style = { font: "64px Arial", fill: "#129305", align: "center" };
+        var gameOverText = game.add.text(380, 220, 'VICTORY', style);
+        gameOverText.fixedToCamera = true;
+    },
     gameOver: function() {
         worldBounds.inputEnabled = true;
         worldBounds.events.onInputDown.add(this.restartGame, this);
-        var style = { font: "64px Arial", fill: "#000000", align: "center" };
+        var style = { font: "64px Arial", fill: "#930505", align: "center" };
         var gameOverText = game.add.text(400, 220, 'DEFEAT', style);
         gameOverText.fixedToCamera = true;
         game.time.events.add(4000, this.addHelperText, this, true);
@@ -210,7 +216,7 @@ mainGame.prototype = {
         this.game.state.start('startScreen', startScreen);
     },
     addHelperText: function() {
-        var style = { font: "32px Arial", fill: "#000000", align: "center" };
+        var style = { font: "32px Arial", fill: "#930505", align: "center" };
         var gameOverHelperText = game.add.text(410, 280, '(click to restart)', style);
         gameOverHelperText.fixedToCamera = true;
     }
