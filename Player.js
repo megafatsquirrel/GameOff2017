@@ -3,6 +3,7 @@ class Player extends GameEntity {
         super(x, y, key);
         this.playerText = '';
         this.swordAudio;
+        this.blockAudio = game.add.audio('block');
         this.sword;
         this.swordSide;
         this.shield;
@@ -196,6 +197,7 @@ class Player extends GameEntity {
             
         } else if (player.isBlocking) {
             console.log('BLOCKING');
+            player.blockAudio.play();
             wolf.biteHasHit = true;
         }
     }

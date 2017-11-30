@@ -13,9 +13,13 @@ class Wolf extends GameEntity {
         this.isSpecialAttackOnCooldown = false;
         this.isAttackOnCooldown;
         this.clearDangerAreaTimer;
+        this.growlAudio = game.add.audio('growl');
+        this.hurtAudio = game.add.audio('wolfHurt');
     }
 
     handleDamage(damage) {
+        wolf.hurtAudio.volume = 0.5;
+        wolf.hurtAudio.play();
         wolf.health -= damage;
         if (wolf.health - damage < 0) {
             wolf.kill();
@@ -83,6 +87,8 @@ class Wolf extends GameEntity {
 
     specialAttack() {
         if (!wolf.isSpecialAttackOnCooldown && !wolf.isSpecialAttack && wolf.alive) {
+            wolf.growlAudio.volume = 3;
+            wolf.growlAudio.play();
             wolf.isSpecialAttack = true;
             wolf.isSpecialAttackOnCooldown = true;
             wolf.body.velocity.x = 0;

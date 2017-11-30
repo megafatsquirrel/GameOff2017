@@ -4,6 +4,9 @@ var preload = function(game){
 preload.prototype = {
 	preload: function(){             
         game.load.audio('stab', 'assets/sounds/stab.mp3');
+        game.load.audio('block', 'assets/sounds/block.mp3');
+        game.load.audio('growl', 'assets/sounds/wolfGrowl.mp3');
+        game.load.audio('wolfHurt', 'assets/sounds/wolfHurt.mp3');
         game.load.audio('bgMusic', 'assets/sounds/bgMusic.mp3');
         
         game.load.image('startScreen', 'assets/sprites/startScreen.png');

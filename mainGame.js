@@ -120,7 +120,7 @@ mainGame.prototype = {
         playerStaminaText.fixedToCamera = true;
 
         bgMusic = game.add.audio('bgMusic');
-        bgMusic.volume = 0.5;
+        bgMusic.volume = 0.3;
         bgMusic.play();
     },
     update: function() {
