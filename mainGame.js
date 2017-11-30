@@ -18,6 +18,8 @@ var mainLayer;
 var attackLayer;
 var bgLayer;
 
+var bgMusic;
+
 var uiStyle = { font: "18px Arial", fill: "#ffffff", align: "left" };
 
 var mainGame = function(game) {};
@@ -116,6 +118,10 @@ mainGame.prototype = {
         playerHealthText.fixedToCamera = true;
         var playerStaminaText = game.add.text(30, 50, 'Stamina', uiStyle);
         playerStaminaText.fixedToCamera = true;
+
+        bgMusic = game.add.audio('bgMusic');
+        bgMusic.volume = 0.5;
+        bgMusic.play();
     },
     update: function() {
 

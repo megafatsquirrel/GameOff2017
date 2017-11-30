@@ -83,8 +83,8 @@ class Player extends GameEntity {
 
     attack() {
         player.setButtonDown();
-        if (!player.isAttacking && player.stamina >= 10) {
-            player.stamina -= 10;
+        if (!player.isAttacking && player.stamina >= 10 && player.alive) {
+            player.stamina -= 25;
             player.swordAudio.play();
             player.isAttacking = true;
             player.sword.position.x = player.position.x;
@@ -121,8 +121,8 @@ class Player extends GameEntity {
 
     block() {
         player.setButtonDown();
-        if (!player.isAttacking && player.stamina >= 10) {
-            player.stamina -= 10;
+        if (!player.isAttacking && player.stamina >= 10 && player.alive) {
+            player.stamina -= 25;
             player.isBlocking = true;
             player.shield.position.x = player.position.x;
             player.shield.position.y = player.position.y;
