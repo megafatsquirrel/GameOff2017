@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>GameOff 2017</title>
+	<script src="phaser.min.js"></script>
+	<style type="text/css">
+        body {
+            margin: 40px 40px;
+			background-color: #000;
+        }
+		canvas {
+			margin: auto;
+		}
+    </style>
+</head>
+<body>
+	<script src="startScreen.js"></script>
+	<script src="GameEntity.js"></script>
+	<script src="Player.js"></script>
+	<script src="Wolf.js"></script>
+	<script src="mainGame.js"></script>
+	<script src="preload.js"></script>
+	<script>
+		var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'game');
+		game.state.add('preload', preload);
+		game.state.add('startScreen', startScreen);
+		game.state.add('mainGame', mainGame);
+		game.state.start('preload');
+	</script>
+</body>
+</html>
