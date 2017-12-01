@@ -93,7 +93,7 @@ class Wolf extends GameEntity {
 
     specialAttack() {
         if (!wolf.isSpecialAttackOnCooldown && !wolf.isSpecialAttack && wolf.alive) {
-            wolf.growlAudio.volume = 3;
+            wolf.growlAudio.volume = 1.5;
             wolf.growlAudio.play();
             wolf.isSpecialAttack = true;
             wolf.isSpecialAttackOnCooldown = true;

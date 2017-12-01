@@ -207,12 +207,13 @@ class Player extends GameEntity {
             player.health -= 60;
             game.camera.shake(0.1, 100);
         }else{
-            player.health -= 15;
+            player.health -= 20;
             game.camera.shake(0.001, 100);
         }
         playerHealthBar.scale.x = player.health / 100;
             
         if (player.health <= 0) {
+            player.health = 0;
             player.kill();
         }
     }
