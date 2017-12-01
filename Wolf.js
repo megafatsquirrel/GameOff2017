@@ -47,15 +47,19 @@ class Wolf extends GameEntity {
     adjustBiteAttack() {
         if(wolf.facing.left) {
             wolf.bite.position.x -= 20;
+            wolf.bite.angle = 0;
         }
         if(wolf.facing.right) {
             wolf.bite.position.x += 20;
+            wolf.bite.angle = 180;
         }
         if(wolf.facing.down) {
             wolf.bite.position.y += 20;
+            wolf.bite.angle = -90;
         }
         if(wolf.facing.top) {
             wolf.bite.position.y -= 20;
+            wolf.bite.angle = 90;
         }
     }
 
