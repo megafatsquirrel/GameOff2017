@@ -153,7 +153,7 @@ mainGame.prototype = {
             if (game.physics.arcade.collide(player.sword, wolf) || game.physics.arcade.collide(player.swordSide, wolf)) {    
                     bloodEmitter.x = wolf.body.position.x;
                     bloodEmitter.y = wolf.body.position.y;
-                    bloodEmitter.start(true, 500, null, 4);
+                    bloodEmitter.start(true, 200, null, 4);
                     bloodEmitter.gravity = 500;
                     wolf.handleDamage(player.swordDamage);
                     player.hasSwordHit = true;
@@ -174,13 +174,11 @@ mainGame.prototype = {
         }
 
         if (game.physics.arcade.collide(player, boundGroup, this.collisionHandler, this.processHandler, this)) {
-            console.log('collide');
         }
 
         if (game.physics.arcade.collide(wolf, boundGroup, this.collisionHandler, this.processHandler, this)) {
-            console.log('collide - wolf');
             wolf.isRetreating = true;
-            game.time.events.add(1000, wolf.removeRetreating, this, true);
+            game.time.events.add(500, wolf.removeRetreating, this, true);
         }
 
         // DEBUG

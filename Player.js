@@ -84,8 +84,8 @@ class Player extends GameEntity {
 
     attack() {
         player.setButtonDown();
-        if (!player.isAttacking && player.stamina >= 10 && player.alive) {
-            player.stamina -= 25;
+        if (!player.isAttacking && player.stamina >= 50 && player.alive) {
+            player.stamina -= 50;
             player.swordAudio.play();
             player.isAttacking = true;
             player.sword.position.x = player.position.x;
@@ -122,8 +122,8 @@ class Player extends GameEntity {
 
     block() {
         player.setButtonDown();
-        if (!player.isAttacking && player.stamina >= 10 && player.alive) {
-            player.stamina -= 25;
+        if (!player.isAttacking && player.stamina >= 50 && player.alive) {
+            player.stamina -= 50;
             player.isBlocking = true;
             player.shield.position.x = player.position.x;
             player.shield.position.y = player.position.y;
@@ -188,7 +188,7 @@ class Player extends GameEntity {
         if (!wolf.biteHasHit && !player.isBlocking) {
             wolf.biteHasHit = true;
             wolf.isRetreating = true;
-            game.time.events.add(game.rnd.integerInRange(1000, 5000), wolf.removeRetreating, this, true);
+            game.time.events.add(game.rnd.integerInRange(1000, 3000), wolf.removeRetreating, this, true);
             bloodEmitter.x = player.body.position.x + 10;
             bloodEmitter.y = player.body.position.y + 10;
             bloodEmitter.gravity = 500;
@@ -196,7 +196,6 @@ class Player extends GameEntity {
             player.handleDamage();
             
         } else if (player.isBlocking) {
-            console.log('BLOCKING');
             player.blockAudio.play();
             wolf.biteHasHit = true;
         }
@@ -204,7 +203,7 @@ class Player extends GameEntity {
 
     handleDamage() {
         if (wolf.isSpecialAttack) {
-            player.health -= 60;
+            player.health -= 40;
             game.camera.shake(0.1, 100);
         }else{
             player.health -= 20;

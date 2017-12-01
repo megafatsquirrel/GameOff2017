@@ -1,18 +1,22 @@
 class Wolf extends GameEntity {
     constructor(x, y, key, type, str, dex, int, vit) {
         super(x, y, key, type, str, dex, int, vit);
-        this.health = 100;
+        this.health = 200;
         this.bite = game.add.sprite(0, 0, 'wolfBite');
         this.biteHasHit;
         this.attackTimer;
         this.isRetreating;
         this.dangerAreaSide = game.add.sprite(0, 0, 'dangerSide');
         this.dangerAreaTop = game.add.sprite(0, 0, 'dangerTop');
+        this.specialAttackSpeed = 600;
         this.specialAttackTimer = game.time.events.add(5000, this.specialAttack, this, true);
+        this.specialAttackTimerInterval = 5000;
         this.isSpecialAttack = false;
         this.isSpecialAttackOnCooldown = false;
         this.isAttackOnCooldown;
         this.clearDangerAreaTimer;
+        this.clearDangerAreaTimerInterval = 1000;
+        this.clearSpecialAttackInterval = 1500;
         this.growlAudio = game.add.audio('growl');
         this.hurtAudio = game.add.audio('wolfHurt');
         this.healthBar = game.add.sprite(x, y, 'playerHealthBar');
@@ -22,7 +26,7 @@ class Wolf extends GameEntity {
         wolf.hurtAudio.volume = 0.5;
         wolf.hurtAudio.play();
         wolf.health -= damage;
-        wolf.healthBar.scale.x = (1 * (wolf.health / 100)) * 0.2;
+        wolf.healthBar.scale.x = (1 * (wolf.health / 200)) * 0.2;
         if (wolf.health - damage < 0) {
             wolf.kill();
         }
@@ -112,8 +116,8 @@ class Wolf extends GameEntity {
                 wolf.dangerAreaSide.visible = true;
             }
 
-            wolf.specialAttackTimer = game.time.events.add(1500, wolf.clearSpecialAttack, this, true);
-            wolf.clearDangerAreaTimer = game.time.events.add(1000, wolf.clearDangerArea, this, true);
+            wolf.specialAttackTimer = game.time.events.add(wolf.clearSpecialAttackInterval, wolf.clearSpecialAttack, this, true);
+            wolf.clearDangerAreaTimer = game.time.events.add(wolf.clearDangerAreaTimerInterval, wolf.clearDangerArea, this, true);
         }
     }
 
@@ -128,26 +132,46 @@ class Wolf extends GameEntity {
         wolf.isSpecialAttackOnCooldown = false;
         wolf.bite.enableBody = false;
         wolf.bite.visible = false;
-        wolf.specialAttackTimer = game.time.events.add(5000, wolf.specialAttack, this, true);
+        wolf.specialAttackTimer = game.time.events.add(wolf.specialAttackTimerInterval, wolf.specialAttack, this, true);
     }
 
     executeSpecial() {
         wolf.bite.enableBody = true;
         wolf.bite.visible = true;
         if (wolf.facing.top) {
-            wolf.body.velocity.y = -600;
+            wolf.body.velocity.y = -wolf.specialAttackSpeed;
         } else if (wolf.facing.down) { 
-            wolf.body.velocity.y = 600;
+            wolf.body.velocity.y = wolf.specialAttackSpeed;
         } else if (wolf.facing.right) {
-            wolf.body.velocity.x = 600;
+            wolf.body.velocity.x = wolf.specialAttackSpeed;
         } else if (wolf.facing.left) {
-            wolf.body.velocity.x = -600;
+            wolf.body.velocity.x = -wolf.specialAttackSpeed;
         }
     }
 
     logic() {
         wolf.healthBar.position.x = wolf.body.position.x + 10;
         wolf.healthBar.position.y = wolf.body.position.y - 10;
+
+        if ( wolf.health < 160) {
+            wolf.specialAttackTimerInterval = 4000;
+            wolf.clearDangerAreaTimerInterval = 900;
+            wolf.clearSpecialAttackInterval = 1400;
+        }
+
+        if ( wolf.health < 110) {
+            wolf.specialAttackTimerInterval = 3000;
+            wolf.clearDangerAreaTimerInterval = 800;
+            wolf.clearSpecialAttackInterval = 1200;
+        }
+
+        if ( wolf.health < 60) {
+            wolf.specialAttackTimerInterval = 2000;
+            wolf.clearDangerAreaTimerInterval = 600;
+            wolf.clearSpecialAttackInterval = 1000;
+        }
+
+
         if (!wolf.isSpecialAttack) {
             wolf.ai();
         }
