@@ -65,6 +65,8 @@ mainGame.prototype = {
         wolf.dangerAreaTop.visible = false;
         wolf.dangerAreaSide.alpha = 0.3;
         wolf.dangerAreaTop.alpha = 0.3;
+        wolf.healthBar.scale.x = 0.2;
+        wolf.healthBar.scale.y = 0.2;
 
         game.physics.arcade.enable([player, player.sword, player.swordSide, player.shield, player.shieldSide, 
                                     wolf, wolf.bite]);
@@ -187,8 +189,6 @@ mainGame.prototype = {
         }
     },
     render: function() {
-        game.debug.text('Wolf\'s health: ' + wolf.health, 770, 32);
-
         if (debugActive) {
             game.debug.bodyInfo(player, 40, 40);
             game.debug.body(player);

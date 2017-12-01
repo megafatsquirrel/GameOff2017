@@ -15,12 +15,14 @@ class Wolf extends GameEntity {
         this.clearDangerAreaTimer;
         this.growlAudio = game.add.audio('growl');
         this.hurtAudio = game.add.audio('wolfHurt');
+        this.healthBar = game.add.sprite(x, y, 'playerHealthBar');
     }
 
     handleDamage(damage) {
         wolf.hurtAudio.volume = 0.5;
         wolf.hurtAudio.play();
         wolf.health -= damage;
+        wolf.healthBar.scale.x = (1 * (wolf.health / 100)) * 0.2;
         if (wolf.health - damage < 0) {
             wolf.kill();
         }
@@ -140,6 +142,8 @@ class Wolf extends GameEntity {
     }
 
     logic() {
+        wolf.healthBar.position.x = wolf.body.position.x + 10;
+        wolf.healthBar.position.y = wolf.body.position.y - 10;
         if (!wolf.isSpecialAttack) {
             wolf.ai();
         }
